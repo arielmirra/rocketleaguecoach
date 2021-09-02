@@ -10,11 +10,14 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
     "firebase": "^8.10.0",
     "firebase-admin": "^9.11.1",
+    "formik": "^2.2.9",
     "next": "^9.5.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

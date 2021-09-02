@@ -1,17 +1,14 @@
 import css from "styled-jsx/css"
 
-import { breakpoints, colors, fonts } from "../../styles/theme"
-import { addOpacityToColor } from "../../styles/utils"
+import { breakpoints, fonts } from "../../styles/theme"
 
-const backgroundColor = addOpacityToColor(colors.primary, 0.3)
+const backgroundUrl =
+  "https://steamuserimages-a.akamaihd.net/ugc/80339917954151566/3CB9761163B46FC5F38B822CCD28E7AE9AEFBAB5/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
 
 export const globalStyles = css.global`
   html,
   body {
-    background-image: radial-gradient(${backgroundColor} 1px, #fdfdfd 1px),
-      radial-gradient(${backgroundColor} 1px, #fdfdfd 1px);
-    background-position: 0 0, 25px 25px;
-    background-size: 50px 50px;
+    background: url(${backgroundUrl});
     padding: 0;
     margin: 0;
     overflow: hidden;
