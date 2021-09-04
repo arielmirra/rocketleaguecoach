@@ -19,6 +19,7 @@ export default function ProfilePage() {
     // }),
     onSubmit: (values) => {
       setEpicId(user.uid, values.epicId)
+      getEpicIds(user.uid).then((db) => console.log(db))
       // console.log(getEpicIds(user.uid))
     },
   })

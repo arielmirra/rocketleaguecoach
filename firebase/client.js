@@ -34,11 +34,11 @@ export const loginWithGoogle = () => {
 export const setEpicId = (uid, epicId) => {
   alert(uid + " --> " + epicId)
   console.log(uid + " --> " + epicId)
-  return db.collection("epicIds").add({
-    uid,
-    epicId,
-    // createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
-  })
+  // return db.collection("epicIds").add({
+  //   uid,
+  //   epicId,
+  //   // createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+  // })
 }
 // TODO: save and get epic IDs of users
 export const getEpicIds = (uid) => {
