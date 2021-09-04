@@ -54,7 +54,7 @@ export default function Home() {
 
       <style jsx>{`
         img {
-          width: 120px;
+          width: 80px;
         }
 
         div {
@@ -69,26 +69,26 @@ export default function Home() {
           );
           display: grid;
           height: 100%;
-          place-content: space-around;
+          place-content: space-evenly;
           place-items: center;
         }
 
         h1 {
           color: ${colors.white};
           font-weight: 800;
-          font-size: 42px;
+          font-size: 33px;
           margin-bottom: 16px;
         }
 
         h2 {
           color: ${colors.white};
-          font-size: 25px;
+          font-size: 20px;
           margin: 0;
         }
 
         p {
           margin: 10px;
-          font-size: 1.2em;
+          font-size: 15px;
         }
       `}</style>
     </>

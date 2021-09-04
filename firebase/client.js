@@ -33,6 +33,7 @@ export const loginWithGoogle = () => {
 
 export const setEpicId = (uid, epicId) => {
   alert(uid + " --> " + epicId)
+  console.log(uid + " --> " + epicId)
   return db.collection("epicIds").add({
     uid,
     epicId,
@@ -40,9 +41,9 @@ export const setEpicId = (uid, epicId) => {
   })
 }
 // TODO: save and get epic IDs of users
-// export const getEpicId = (uid) => {
-//   return db.collection("epicIds").get()
-// }
+export const getEpicIds = (uid) => {
+  return db.collection("epicIds").get()
+}
 
 // const mapDevitFromFirebaseToDevitObject = (doc) => {
 //   const data = doc.data()

@@ -2,9 +2,10 @@ import useUser from "../../hooks/useUser"
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import React from "react"
-import { Button, TextField } from "@material-ui/core"
 import Avatar from "../../components/Avatar"
-import { setEpicId } from "../../firebase/client"
+import { getEpicIds, setEpicId } from "../../firebase/client"
+import { MatButton, MatTextField } from "../../hooks/formik"
+import { Button, TextField } from "@material-ui/core"
 
 export default function ProfilePage() {
   const user = useUser()
@@ -18,6 +19,7 @@ export default function ProfilePage() {
     // }),
     onSubmit: (values) => {
       setEpicId(user.uid, values.epicId)
+      // console.log(getEpicIds(user.uid))
     },
   })
 
@@ -25,28 +27,8 @@ export default function ProfilePage() {
     <>
       <Avatar width={100} />
       <form onSubmit={formik.handleSubmit}>
-        <TextField
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          id="epicId"
-          name="epicId"
-          label="Epic ID"
-          placeholder={formik.values.epicId}
-          value={formik.values.epicId}
-          onChange={formik.handleChange}
-          error={formik.touched.epicId && Boolean(formik.errors.epicId)}
-          helperText={formik.touched.epicId && formik.errors.epicId}
-        />
-        <Button
-          color="primary"
-          variant="contained"
-          fullWidth
-          type="submit"
-          disabled={false}
-        >
-          Guardar Epic ID
-        </Button>
+        <MatTextField inputId="epicId" formik={formik} label="Epic ID" />
+        <MatButton text="GUARDAR EPIC ID" type="submit" />
       </form>
       <style jsx>{`
         form {

@@ -9,9 +9,21 @@ import Head from "next/head"
 export default function App({ Component, pageProps }) {
   return (
     <>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      />
       <AppLayout>
         <Head>
           <title>RL Coach</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width"
+          />
         </Head>
         <header>
           <h2>Rocket League Coach</h2>
@@ -75,7 +87,10 @@ export default function App({ Component, pageProps }) {
           }
 
           nav a:hover {
-            background: radial-gradient(#0099ff22 15%, transparent 16%);
+            background: radial-gradient(
+              ${colors.primary}22 15%,
+              transparent 16%
+            );
             background-size: 180px 180px;
             background-position: center;
           }
