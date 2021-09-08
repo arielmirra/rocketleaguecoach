@@ -1,5 +1,5 @@
 {
-  "name": "devter",
+  "name": "rl-coach",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,11 +12,12 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
-    "firebase": "^8.10.0",
+    "date-fns": "^2.23.0",
+    "firebase": "^9.0.1",
     "firebase-admin": "^9.11.1",
     "formik": "^2.2.9",
-    "next": "^9.5.1",
-    "react": "^16.13.1",
+    "next": "^11.1.2",
+    "react": "^17.0.2",
     "react-dom": "^16.13.1",
     "yup": "^0.32.9"
   },
