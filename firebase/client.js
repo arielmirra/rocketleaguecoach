@@ -1,4 +1,6 @@
-import firebase from "firebase"
+import firebase from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
 
 const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG)
 
@@ -6,24 +8,33 @@ const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG)
 firebase.auth().useDeviceLanguage()
 
 const db = firebase.firestore()
+const epicIDs = db.collection("epicIDs")
 
-const mapUserFromFirebaseAuthToUser = (user) => {
+const mapUserFromFirebaseAuthToUser = async (user) => {
   const { displayName, email, photoURL, uid } = user
-
+  const epicID = await getEpicIDFromUid(uid)
   return {
     avatar: photoURL,
     username: displayName,
     email,
     uid,
+    epicID,
   }
 }
 
 export const onAuthStateChanged = (onChange) => {
-  return firebase.auth().onAuthStateChanged((user) => {
-    const normalizedUser = user ? mapUserFromFirebaseAuthToUser(user) : null
+  console.log("onAuthStateChanged")
+  return firebase.auth().onAuthStateChanged(async (user) => {
+    const normalizedUser = user
+      ? await mapUserFromFirebaseAuthToUser(user)
+      : null
 
     onChange(normalizedUser)
   })
+}
+
+export const logout = async () => {
+  return await firebase.auth().signOut()
 }
 
 export const loginWithGoogle = () => {
@@ -31,44 +42,21 @@ export const loginWithGoogle = () => {
   return firebase.auth().signInWithPopup(googleProvider)
 }
 
-export const setEpicId = (uid, epicId) => {
-  alert(uid + " --> " + epicId)
-  console.log(uid + " --> " + epicId)
-  // return db.collection("epicIds").add({
-  //   uid,
-  //   epicId,
-  //   // createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
-  // })
-}
-// TODO: save and get epic IDs of users
-export const getEpicIds = (uid) => {
-  return db.collection("epicIds").get()
+export const setEpicID = (uid, epicID) => {
+  return epicIDs.doc(uid).set({
+    epicID,
+  })
 }
 
-// const mapDevitFromFirebaseToDevitObject = (doc) => {
-//   const data = doc.data()
-//   const id = doc.id
-//   const { createdAt } = data
-//
-//   return {
-//     ...data,
-//     id,
-//     createdAt: +createdAt.toDate(),
-//   }
-// }
-//
-// export const listenLatestDevits = (callback) => {
-//   return db
-//     .collection("devits")
-//     .orderBy("createdAt", "desc")
-//     .limit(20)
-//     .onSnapshot(({ docs }) => {
-//       const newDevits = docs.map(mapDevitFromFirebaseToDevitObject)
-//       callback(newDevits)
-//     })
-// }
-//
-// export const uploadImage = (file) => {
-//   const ref = firebase.storage().ref(`images/${file.name}`)
-//   return ref.put(file)
-// }
+export const getEpicIDs = () => {
+  return epicIDs.get()
+}
+
+export const getEpicIDFromUid = async (uid) => {
+  const doc = await epicIDs.doc(uid).get()
+  return doc.exists ? doc.data().epicID : null
+}
+
+export const getStatsFromEpicID = async (epicID) => {
+  return (await fetch("/api/stats/" + epicID)).json()
+}
