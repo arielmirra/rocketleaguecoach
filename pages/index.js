@@ -1,24 +1,23 @@
-import { useEffect } from "react"
 import Head from "next/head"
-
 import Button from "components/Button"
 import Logo from "components/Icons/Logo"
-
 import { colors } from "styles/theme"
-
-import { loginWithGoogle } from "firebase/client"
-
 import { useRouter } from "next/router"
-import useUser, { USER_STATES } from "hooks/useUser"
+import { USER_STATES } from "hooks/useUser"
 import Google from "../components/Icons/Google"
+import { Typography, makeStyles } from "@material-ui/core"
+import withUser from "wrappers/withUser"
+import { loginWithGoogle } from "../firebase/client"
 
-export default function Home() {
-  const user = useUser()
+const useStyles = makeStyles((theme) => ({
+  text: {
+    color: theme.white,
+  },
+}))
+
+const Home = ({ user }) => {
   const router = useRouter()
-
-  useEffect(() => {
-    user && router.replace("/improve")
-  }, [user])
+  const classes = useStyles()
 
   const handleClick = () => {
     loginWithGoogle().catch((err) => {
@@ -35,17 +34,19 @@ export default function Home() {
 
       <section>
         <Logo width="350" />
-        <h1>Rocket League Coach</h1>
-        <h2>
+        <Typography className={classes.text} variant="h4">
+          Rocket League Coach
+        </Typography>
+        <Typography className={classes.text} variant="h5">
           Jugá mejor a Rocket League
           <br />
           De forma fácil y rápida 🚗🚀⚽️
-        </h2>
+        </Typography>
 
         <div className="login-button">
           {user === USER_STATES.NOT_LOGGED && (
             <Button onClick={handleClick}>
-              <Google /> <p>Inicia sesión con Google</p>
+              <Google /> <Typography>Inicia sesión con Google</Typography>
             </Button>
           )}
           {user === USER_STATES.NOT_KNOWN && <img src="/spinner.gif" />}
@@ -94,3 +95,5 @@ export default function Home() {
     </>
   )
 }
+
+export default withUser(Home)
