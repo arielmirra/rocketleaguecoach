@@ -5,6 +5,7 @@ import Improve from "../components/Icons/Improve"
 import Profile from "../components/Icons/Profile"
 import { colors } from "../styles/theme"
 import Head from "next/head"
+import { Typography } from "@material-ui/core"
 
 export default function App({ Component, pageProps }) {
   return (
@@ -25,27 +26,31 @@ export default function App({ Component, pageProps }) {
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
-        <header>
-          <h2>Rocket League Coach</h2>
-        </header>
-        <Component {...pageProps} />
-        <nav>
-          <Link href={"/history"}>
-            <a>
-              <History width={32} height={32} stroke="#09f" />
-            </a>
-          </Link>
-          <Link href={"/improve"}>
-            <a>
-              <Improve width={32} height={32} stroke="#09f" />
-            </a>
-          </Link>
-          <Link href={"/profile"}>
-            <a>
-              <Profile width={32} height={32} stroke="#09f" />
-            </a>
-          </Link>
-        </nav>
+        <div id="body">
+          <header>
+            <Typography variant="h5">Rocket League Coach</Typography>
+          </header>
+          <div id="content">
+            <Component {...pageProps} />
+          </div>
+          <nav>
+            <Link href={"/history"}>
+              <a>
+                <History width={32} height={32} stroke="#09f" />
+              </a>
+            </Link>
+            <Link href={"/improve"}>
+              <a>
+                <Improve width={32} height={32} stroke="#09f" />
+              </a>
+            </Link>
+            <Link href={"/profile"}>
+              <a>
+                <Profile width={32} height={32} stroke="#09f" />
+              </a>
+            </Link>
+          </nav>
+        </div>
       </AppLayout>
       <style jsx>
         {`
@@ -62,6 +67,19 @@ export default function App({ Component, pageProps }) {
             width: 100%;
           }
 
+          #body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+          }
+
+          #content {
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+          }
+
           h2 {
             font-size: 21px;
             font-weight: 800;
@@ -74,7 +92,6 @@ export default function App({ Component, pageProps }) {
             border-top: 1px solid #eee;
             display: flex;
             height: 49px;
-            position: absolute;
             width: 100%;
           }
 

@@ -1,8 +1,6 @@
-import useUser from "hooks/useUser"
+import withUser from "wrappers/withUser"
 
-export default function HomePage() {
-  const user = useUser()
-
+function HomePage({ user }) {
   return (
     <>
       <section></section>
@@ -14,3 +12,5 @@ export default function HomePage() {
     </>
   )
 }
+
+export default withUser(HomePage)

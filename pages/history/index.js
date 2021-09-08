@@ -1,11 +1,11 @@
-import useUser from "../../hooks/useUser"
+import withUser from "wrappers/withUser"
 
-export default function HistoryPage() {
-  const user = useUser()
-
+function HistoryPage({ user }) {
   return (
     <>
       <style jsx>{``}</style>
     </>
   )
 }
+
+export default withUser(HistoryPage)
