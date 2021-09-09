@@ -11,6 +11,7 @@ const db = firebase.firestore()
 const epicIDs = db.collection("epicIDs")
 
 const mapUserFromFirebaseAuthToUser = async (user) => {
+  console.log("mapUserFromFirebaseAuthToUser")
   const { displayName, email, photoURL, uid } = user
   const epicID = await getEpicIDFromUid(uid)
   return {

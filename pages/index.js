@@ -8,6 +8,7 @@ import Google from "../components/Icons/Google"
 import { Typography, makeStyles } from "@material-ui/core"
 import withUser from "wrappers/withUser"
 import { loginWithGoogle } from "../firebase/client"
+import { useEffect } from "react"
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -24,6 +25,10 @@ const Home = ({ user }) => {
       console.log(err)
     })
   }
+
+  useEffect(() => {
+    if (user) router.push("/profile")
+  }, [user])
 
   return (
     <>
@@ -63,11 +68,6 @@ const Home = ({ user }) => {
         }
 
         section {
-          background-image: linear-gradient(
-            to bottom left,
-            ${colors.primary},
-            ${colors.secondary}
-          );
           display: grid;
           height: 100%;
           place-content: space-evenly;
