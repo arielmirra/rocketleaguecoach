@@ -16,7 +16,13 @@ import {
   CircularProgress,
 } from "@material-ui/core"
 import { Create as CreateIcon } from "@material-ui/icons"
-import withUser from "wrappers/withUser"
+import {
+  AuthAction,
+  useAuthUser,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth"
+import Loader from "../../components/Loader"
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -40,7 +46,9 @@ const stats = async (epicID) => {
   } else return data
 }
 
-function ProfilePage({ user, setUser }) {
+const ProfilePage = () => {
+  const AuthUser = useAuthUser()
+  console.log(AuthUser)
   const classes = useStyles()
   const [isModalOpen, setModalOpened] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -50,12 +58,12 @@ function ProfilePage({ user, setUser }) {
 
   const formik = useFormik({
     initialValues: {
-      epicID: user?.epicID ?? "",
+      epicID: AuthUser?.epicID ?? "",
     },
     onSubmit: async (values) => {
       setSubmitting(true)
-      await setEpicID(user.uid, values.epicID)
-      setUser({ ...user, epicID: values.epicID })
+      await setEpicID(AuthUser.uid, values.epicID)
+      // setUser({ ...AuthUser, epicID: values.epicID })
       closeModal()
       setSubmitting(false)
     },
@@ -67,17 +75,17 @@ function ProfilePage({ user, setUser }) {
         <Grid container item xs={4} justifyContent="center">
           <Avatar
             className={classes.large}
-            alt={user.username}
-            src={user.avatar}
-            title={user.username}
+            alt={AuthUser.displayName}
+            src={AuthUser.photoURL}
+            title={AuthUser.displayName}
           />
         </Grid>
         <Grid item xs={8} container direction="column" justifyContent="center">
-          <Typography variant="h5">{user.username}</Typography>
-          {user.epicID && (
+          <Typography variant="h5">{AuthUser.displayName}</Typography>
+          {AuthUser.epicID && (
             <Grid container direction="row" alignItems="center" spacing={2}>
               <Grid item>
-                <Typography variant="h6">{user.epicID}</Typography>
+                <Typography variant="h6">{AuthUser.epicID}</Typography>
               </Grid>
               <Grid item>
                 <IconButton onClick={openModal}>
@@ -88,7 +96,7 @@ function ProfilePage({ user, setUser }) {
           )}
         </Grid>
       </Grid>
-      {!user.epicID && (
+      {!AuthUser.epicID && (
         <div id="save-epic-id" className="center-content">
           <MatButton onClick={openModal} text="Ingresá tu Epic ID" />
         </div>
@@ -140,4 +148,8 @@ function ProfilePage({ user, setUser }) {
   )
 }
 
-export default withUser(ProfilePage)
+export default withAuthUser({
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  LoaderComponent: Loader,
+})(ProfilePage)

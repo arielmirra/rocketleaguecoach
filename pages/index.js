@@ -2,13 +2,16 @@ import Head from "next/head"
 import Button from "components/Button"
 import Logo from "components/Icons/Logo"
 import { colors } from "styles/theme"
-import { useRouter } from "next/router"
-import { USER_STATES } from "hooks/useUser"
 import Google from "../components/Icons/Google"
 import { Typography, makeStyles } from "@material-ui/core"
-import withUser from "wrappers/withUser"
 import { loginWithGoogle } from "../firebase/client"
-import { useEffect } from "react"
+import {
+  AuthAction,
+  useAuthUser,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth"
+import Loader from "../components/Loader"
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -16,19 +19,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Home = ({ user }) => {
-  const router = useRouter()
+const Home = () => {
   const classes = useStyles()
 
-  const handleClick = () => {
-    loginWithGoogle().catch((err) => {
-      console.log(err)
-    })
+  const googleAuth = async () => {
+    await loginWithGoogle()
   }
-
-  useEffect(() => {
-    if (user) router.push("/profile")
-  }, [user])
 
   return (
     <>
@@ -49,12 +45,9 @@ const Home = ({ user }) => {
         </Typography>
 
         <div className="login-button">
-          {user === USER_STATES.NOT_LOGGED && (
-            <Button onClick={handleClick}>
-              <Google /> <Typography>Inicia sesión con Google</Typography>
-            </Button>
-          )}
-          {user === USER_STATES.NOT_KNOWN && <img src="/spinner.gif" />}
+          <Button onClick={googleAuth}>
+            <Google /> <Typography>Inicia sesión con Google</Typography>
+          </Button>
         </div>
       </section>
 
@@ -96,4 +89,9 @@ const Home = ({ user }) => {
   )
 }
 
-export default withUser(Home)
+export default withAuthUser({
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.RENDER,
+  whenAuthed: AuthAction.REDIRECT_TO_APP,
+  LoaderComponent: Loader,
+})(Home)

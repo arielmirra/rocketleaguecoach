@@ -1,8 +1,14 @@
 import { addHours } from "date-fns"
 import { useEffect, useState } from "react"
-import withUser from "wrappers/withUser"
 import InTrainingSubPage from "./states/InTraining"
 import NotStartedSubPage from "./states/NotStarted"
+import {
+  AuthAction,
+  useAuthUser,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth"
+import Loader from "../../components/Loader"
 
 const subNavStates = { notStarted: "0", inTraining: "1" }
 const initialState = {
@@ -10,7 +16,8 @@ const initialState = {
   finishMs: 0,
 }
 
-function ImprovePage({ user }) {
+const ImprovePage = () => {
+  const AuthUser = useAuthUser()
   const [state, setState] = useState(initialState)
 
   useEffect(() => {
@@ -78,4 +85,8 @@ function ImprovePage({ user }) {
   )
 }
 
-export default withUser(ImprovePage)
+export default withAuthUser({
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  LoaderComponent: Loader,
+})(ImprovePage)

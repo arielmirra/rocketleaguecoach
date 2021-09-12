@@ -1,6 +1,14 @@
-import withUser from "wrappers/withUser"
+import {
+  AuthAction,
+  useAuthUser,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth"
+import Loader from "../../components/Loader"
 
-function HistoryPage({ user }) {
+const HistoryPage = () => {
+  const AuthUser = useAuthUser()
+
   return (
     <>
       <style jsx>{``}</style>
@@ -8,4 +16,8 @@ function HistoryPage({ user }) {
   )
 }
 
-export default withUser(HistoryPage)
+export default withAuthUser({
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  LoaderComponent: Loader,
+})(HistoryPage)
