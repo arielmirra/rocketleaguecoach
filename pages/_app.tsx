@@ -6,11 +6,12 @@ import Head from "next/head"
 import { Typography } from "@material-ui/core"
 import styles, { globalStyles } from "./styles"
 import initAuth from "../initAuth"
+import type { AppProps /*, AppContext */ } from "next/app"
 
 console.log("before init")
 initAuth()
 console.log("after init")
-function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <div>
@@ -59,4 +60,4 @@ function App({ Component, pageProps }) {
   )
 }
 
-export default App
+export default MyApp

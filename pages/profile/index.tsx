@@ -23,6 +23,8 @@ import {
   withAuthUserTokenSSR,
 } from "next-firebase-auth"
 import Loader from "../../components/Loader"
+import { TrackerStats } from "../../components/Tracker"
+import { plainToClass } from "class-transformer"
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const statsApi = async (epicID) => {
+async function getTrackerStats(epicID: string) {
   if (epicID) {
     const proxy = "https://intense-beyond-50191.herokuapp.com/"
     const api =
@@ -54,14 +56,19 @@ const ProfilePage = () => {
   const classes = useStyles()
   const [isModalOpen, setModalOpened] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [epicID, setEpicID] = useState()
-  const [stats, setStats] = useState()
+  const [epicID, setEpicID] = useState("")
+  const [stats, setStats] = useState<TrackerStats>({ segments: [] })
 
-  useEffect(async () => {
-    const id = await getEpicIDFromId(AuthUser.id)
-    setEpicID(id)
-    const data = await statsApi(id)
-    setStats(data)
+  useEffect(() => {
+    getEpicIDFromId(AuthUser.id).then((id) => {
+      setEpicID(id)
+      getTrackerStats(id).then((data) => {
+        console.log(data.data)
+        const statistics = plainToClass(TrackerStats, data.data)
+        console.log(statistics)
+        setStats(data.data)
+      })
+    })
   }, [])
 
   const closeModal = () => setModalOpened(false)
