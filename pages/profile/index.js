@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
-import React, { useState } from "react"
-import { setEpicID } from "../../firebase/client"
+import React, { useEffect, useState } from "react"
+import { getEpicIDFromId, getEpicIDs, saveEpicID } from "../../firebase/client"
 import { MatButton, MatTextField } from "../../hooks/formik"
 import {
   Grid,
@@ -31,39 +31,50 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const stats = async (epicID) => {
-  const api =
-    "https://api.tracker.gg/api/v2/rocket-league/standard/profile/epic/"
-  const res = await fetch(api + epicID, {
-    headers: {
-      "user-agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.58 Safari/537.36",
-    },
-  })
-  const data = await res.json()
-  if (res.status === 404) {
-    return { notFound: true }
-  } else return data
+const statsApi = async (epicID) => {
+  if (epicID) {
+    const proxy = "https://intense-beyond-50191.herokuapp.com/"
+    const api =
+      "https://api.tracker.gg/api/v2/rocket-league/standard/profile/epic/"
+    const res = await fetch(proxy + api + epicID, {
+      headers: {
+        "user-agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.58 Safari/537.36",
+      },
+    })
+    const data = await res.json()
+    if (res.status === 404) {
+      return { notFound: true }
+    } else return data
+  } else return null
 }
 
 const ProfilePage = () => {
   const AuthUser = useAuthUser()
-  console.log(AuthUser)
   const classes = useStyles()
   const [isModalOpen, setModalOpened] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [epicID, setEpicID] = useState()
+  const [stats, setStats] = useState()
+
+  useEffect(async () => {
+    const id = await getEpicIDFromId(AuthUser.id)
+    setEpicID(id)
+    const data = await statsApi(id)
+    setStats(data)
+  }, [])
 
   const closeModal = () => setModalOpened(false)
   const openModal = () => setModalOpened(true)
 
   const formik = useFormik({
     initialValues: {
-      epicID: AuthUser?.epicID ?? "",
+      epicID: epicID ?? "",
     },
     onSubmit: async (values) => {
       setSubmitting(true)
-      await setEpicID(AuthUser.uid, values.epicID)
-      // setUser({ ...AuthUser, epicID: values.epicID })
+      setEpicID(values.epicID)
+      saveEpicID(AuthUser.id, values.epicID)
       closeModal()
       setSubmitting(false)
     },
@@ -82,10 +93,10 @@ const ProfilePage = () => {
         </Grid>
         <Grid item xs={8} container direction="column" justifyContent="center">
           <Typography variant="h5">{AuthUser.displayName}</Typography>
-          {AuthUser.epicID && (
+          {epicID && (
             <Grid container direction="row" alignItems="center" spacing={2}>
               <Grid item>
-                <Typography variant="h6">{AuthUser.epicID}</Typography>
+                <Typography variant="h6">{epicID}</Typography>
               </Grid>
               <Grid item>
                 <IconButton onClick={openModal}>
@@ -96,7 +107,7 @@ const ProfilePage = () => {
           )}
         </Grid>
       </Grid>
-      {!AuthUser.epicID && (
+      {!epicID && (
         <div id="save-epic-id" className="center-content">
           <MatButton onClick={openModal} text="Ingresá tu Epic ID" />
         </div>
