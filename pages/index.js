@@ -3,14 +3,10 @@ import Button from "components/Button"
 import Logo from "components/Icons/Logo"
 import { colors } from "styles/theme"
 import Google from "../components/Icons/Google"
-import { Typography, makeStyles } from "@material-ui/core"
+import { Typography } from "@mui/material"
+import { makeStyles } from "@mui/styles"
 import { loginWithGoogle } from "../firebase/client"
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth"
+import { AuthAction, withAuthUser } from "next-firebase-auth"
 import Loader from "../components/Loader"
 
 const useStyles = makeStyles((theme) => ({

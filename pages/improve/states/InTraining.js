@@ -1,16 +1,9 @@
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  makeStyles,
-  Typography,
-} from "@material-ui/core"
-import { Close } from "@material-ui/icons"
-import { format } from "date-fns"
 import useCountdown from "hooks/useCountdown"
 import { useEffect, useMemo } from "react"
 import { colors, verticalProgressBarColors } from "styles/theme"
+import { IconButton, List, ListItem, Typography } from "@mui/material"
+import { Close } from "@mui/icons-material"
+import { makeStyles } from "@mui/styles"
 
 const mockData = {
   timeDivision: [1, 2, 4, 1, 2],

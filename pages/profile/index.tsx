@@ -6,7 +6,6 @@ import {
   Grid,
   Avatar,
   Typography,
-  makeStyles,
   Button,
   Dialog,
   DialogTitle,
@@ -14,8 +13,8 @@ import {
   DialogActions,
   IconButton,
   CircularProgress,
-} from "@material-ui/core"
-import { Create as CreateIcon } from "@material-ui/icons"
+} from "@mui/material"
+import { Create as CreateIcon } from "@mui/icons-material"
 import {
   AuthAction,
   useAuthUser,
@@ -25,6 +24,7 @@ import {
 import Loader from "../../components/Loader"
 import { TrackerStats } from "../../components/Tracker"
 import { plainToClass } from "class-transformer"
+import { makeStyles } from "@mui/styles"
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -63,10 +63,8 @@ const ProfilePage = () => {
     getEpicIDFromId(AuthUser.id).then((id) => {
       setEpicID(id)
       getTrackerStats(id).then((data) => {
-        console.log(data.data)
         const statistics = plainToClass(TrackerStats, data.data)
-        console.log(statistics)
-        setStats(data.data)
+        setStats(statistics)
       })
     })
   }, [])
@@ -151,6 +149,13 @@ const ProfilePage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      {stats.segments.length ? (
+        <p>SEGMENTS</p>
+      ) : (
+        <div className="center-content">
+          <CircularProgress />
+        </div>
+      )}
       <style jsx>{`
         #save-epic-id {
           flex: 1;

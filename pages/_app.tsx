@@ -3,14 +3,15 @@ import History from "../components/Icons/History"
 import Improve from "../components/Icons/Improve"
 import Profile from "../components/Icons/Profile"
 import Head from "next/head"
-import { Typography } from "@material-ui/core"
+import { Typography } from "@mui/material"
 import styles, { globalStyles } from "./styles"
 import initAuth from "../initAuth"
 import type { AppProps /*, AppContext */ } from "next/app"
+import { ThemeProvider } from "@mui/material/styles"
+import { theme } from "../styles/theme"
 
-console.log("before init")
 initAuth()
-console.log("after init")
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -30,7 +31,9 @@ function MyApp({ Component, pageProps }: AppProps) {
               </Typography>
             </header>
             <div id="content">
-              <Component {...pageProps} />
+              <ThemeProvider theme={theme}>
+                <Component {...pageProps} />
+              </ThemeProvider>
             </div>
             <nav>
               <Link href={"/history"}>

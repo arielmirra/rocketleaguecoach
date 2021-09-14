@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core"
+import { Typography } from "@mui/material"
 import { useFormik } from "formik"
 import { MatTextField, MatButton } from "hooks/formik"
 import * as Yup from "yup"
