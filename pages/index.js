@@ -1,13 +1,13 @@
 import Head from "next/head"
-import Button from "components/Button"
-import Logo from "components/Icons/Logo"
-import { colors } from "styles/theme"
 import Google from "../components/Icons/Google"
 import { Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 import { loginWithGoogle } from "../firebase/client"
 import { AuthAction, withAuthUser } from "next-firebase-auth"
 import Loader from "../components/Loader"
+import Button from "../components/Button"
+import Logo from "../components/Icons/Logo"
+import { colors } from "../styles/theme"
 
 const useStyles = makeStyles((theme) => ({
   text: {

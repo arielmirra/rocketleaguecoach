@@ -9,6 +9,7 @@ import initAuth from "../initAuth"
 import type { AppProps /*, AppContext */ } from "next/app"
 import { ThemeProvider } from "@mui/material/styles"
 import { theme } from "../styles/theme"
+import "reflect-metadata"
 
 initAuth()
 

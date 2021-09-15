@@ -15,16 +15,12 @@ import {
   CircularProgress,
 } from "@mui/material"
 import { Create as CreateIcon } from "@mui/icons-material"
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth"
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
 import { TrackerStats } from "../../components/Tracker"
 import { plainToClass } from "class-transformer"
 import { makeStyles } from "@mui/styles"
+import StatCard from "../../components/StatCard"
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -63,7 +59,13 @@ const ProfilePage = () => {
     getEpicIDFromId(AuthUser.id).then((id) => {
       setEpicID(id)
       getTrackerStats(id).then((data) => {
-        const statistics = plainToClass(TrackerStats, data.data)
+        const statistics = plainToClass(TrackerStats, data.data, {
+          enableImplicitConversion: true,
+        })
+        console.log(data.data)
+        console.log(statistics)
+        console.log(statistics.segments)
+        console.log(statistics.segments[0].stats)
         setStats(statistics)
       })
     })
@@ -150,7 +152,9 @@ const ProfilePage = () => {
         </DialogActions>
       </Dialog>
       {stats.segments.length ? (
-        <p>SEGMENTS</p>
+        <div>
+          <StatCard segment={stats.segments[0]} />
+        </div>
       ) : (
         <div className="center-content">
           <CircularProgress />
