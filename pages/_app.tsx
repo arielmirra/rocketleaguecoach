@@ -16,7 +16,7 @@ initAuth()
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <div>
+      <div className="main-container">
         <main>
           <Head>
             <title>RL Coach</title>
@@ -25,35 +25,33 @@ function MyApp({ Component, pageProps }: AppProps) {
               content="minimum-scale=1, initial-scale=1, width=device-width"
             />
           </Head>
-          <div id="body">
-            <header>
-              <Typography variant="h5">
-                <strong>Rocket League Coach</strong>
-              </Typography>
-            </header>
-            <div id="content">
-              <ThemeProvider theme={theme}>
-                <Component {...pageProps} />
-              </ThemeProvider>
-            </div>
-            <nav>
-              <Link href={"/history"}>
-                <a>
-                  <History width={32} height={32} stroke="#09f" />
-                </a>
-              </Link>
-              <Link href={"/improve"}>
-                <a>
-                  <Improve width={32} height={32} stroke="#09f" />
-                </a>
-              </Link>
-              <Link href={"/profile"}>
-                <a>
-                  <Profile width={32} height={32} stroke="#09f" />
-                </a>
-              </Link>
-            </nav>
+          <header>
+            <Typography variant="h5">
+              <strong>Rocket League Coach</strong>
+            </Typography>
+          </header>
+          <div id="content">
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />
+            </ThemeProvider>
           </div>
+          <nav>
+            <Link href={"/history"}>
+              <a>
+                <History width={32} height={32} stroke="#09f" />
+              </a>
+            </Link>
+            <Link href={"/improve"}>
+              <a>
+                <Improve width={32} height={32} stroke="#09f" />
+              </a>
+            </Link>
+            <Link href={"/profile"}>
+              <a>
+                <Profile width={32} height={32} stroke="#09f" />
+              </a>
+            </Link>
+          </nav>
         </main>
       </div>
       <style jsx>{styles}</style>

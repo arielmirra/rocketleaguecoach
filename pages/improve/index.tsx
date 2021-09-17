@@ -8,7 +8,9 @@ import Loader from "../../components/Loader"
 const subNavStates = { notStarted: "0", inTraining: "1" }
 const initialState = {
   subNavState: subNavStates.notStarted,
+  startMs: 0,
   finishMs: 0,
+  hours: 0,
 }
 
 const ImprovePage = () => {
@@ -26,6 +28,7 @@ const ImprovePage = () => {
     }
     setState({
       subNavState: localStorageData.subNavState || subNavStates.notStarted,
+      startMs: localStorageData.startMs || 0,
       finishMs: localStorageData.finishMs || 0,
       hours: localStorageData.hours || 0,
     })
@@ -46,6 +49,7 @@ const ImprovePage = () => {
               localStorage.setItem("hours", hours.toString())
               setState({
                 subNavState: subNavStates.inTraining,
+                startMs,
                 finishMs,
                 hours,
               })
@@ -61,6 +65,7 @@ const ImprovePage = () => {
               setState({
                 subNavState: subNavStates.notStarted,
                 startMs: 0,
+                finishMs: 0,
                 hours: 0,
               })
             }}
@@ -73,7 +78,7 @@ const ImprovePage = () => {
       <style jsx>{`
         .improve-container {
           height: 100%;
-          overflow: auto;
+          width: 100%;
         }
       `}</style>
     </>
