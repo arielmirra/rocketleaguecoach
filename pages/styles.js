@@ -28,7 +28,7 @@ export const globalStyles = css.global`
 export default css`
   div {
     display: grid;
-    height: 100vh;
+    height: calc(100vh - 49px);
     place-items: center;
   }
 
@@ -77,6 +77,7 @@ export default css`
     padding: 20px;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
   }
 
   h2 {

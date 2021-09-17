@@ -1,6 +1,6 @@
-import useCountdown from "hooks/useCountdown"
+import useCountdown from "../../../hooks/useCountdown"
 import { useEffect, useMemo } from "react"
-import { colors, verticalProgressBarColors } from "styles/theme"
+import { colors, verticalProgressBarColors } from "../../../styles/theme"
 import { IconButton, List, ListItem, Typography } from "@mui/material"
 import { Close } from "@mui/icons-material"
 import { makeStyles } from "@mui/styles"

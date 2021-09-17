@@ -33,3 +33,5 @@ yarn-error.log*
 
 # firebase keys
 firebase/firebase-keys.json
+
+package-lock.json

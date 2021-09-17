@@ -8,7 +8,6 @@ export class TrackerStats {
 export class Segment {
   attributes: any
   metadata: Metadata
-  @Type(() => Stat)
   stats: Stats
   type: string
 }
@@ -23,7 +22,7 @@ export class Stats {
   score: Stat
   seasonRewardLevel: Stat
   seasonRewardWins: Stat
-  Shots: Stat
+  shots: Stat
   tRNRating: Stat
   wins: Stat
 

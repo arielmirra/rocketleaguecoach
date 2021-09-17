@@ -2,12 +2,7 @@ import { addHours } from "date-fns"
 import { useEffect, useState } from "react"
 import InTrainingSubPage from "./states/InTraining"
 import NotStartedSubPage from "./states/NotStarted"
-import {
-  AuthAction,
-  useAuthUser,
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from "next-firebase-auth"
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
 
 const subNavStates = { notStarted: "0", inTraining: "1" }
