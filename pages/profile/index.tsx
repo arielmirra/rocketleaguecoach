@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import React, { useEffect, useState } from "react"
-import { getEpicIDFromId, getEpicIDs, saveEpicID } from "../../firebase/client"
+import { getEpicIDFromId, saveEpicID } from "../../firebase/client"
 import { MatButton, MatTextField } from "../../hooks/formik"
 import {
   Grid,
@@ -20,7 +20,7 @@ import Loader from "../../components/Loader"
 import { TrackerStats } from "../../components/Tracker"
 import { plainToClass } from "class-transformer"
 import { makeStyles } from "@mui/styles"
-import StatCard from "../../components/StatCard"
+import LifetimeStatsCards from "../../components/LifetimeStatsCards"
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -65,7 +65,6 @@ const ProfilePage = () => {
         console.log(data.data)
         console.log(statistics)
         console.log(statistics.segments)
-        console.log(statistics.segments[0].stats)
         setStats(statistics)
       })
     })
@@ -151,15 +150,15 @@ const ProfilePage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {stats.segments.length ? (
-        <div>
-          <StatCard segment={stats.segments[0]} />
-        </div>
-      ) : (
-        <div className="center-content">
-          <CircularProgress />
-        </div>
-      )}
+      <div className="stat-cards">
+        {stats.segments.length ? (
+          <LifetimeStatsCards segment={stats.segments[0]} />
+        ) : (
+          <div className="center-content">
+            <CircularProgress />
+          </div>
+        )}
+      </div>
       <style jsx>{`
         #save-epic-id {
           flex: 1;
@@ -169,6 +168,10 @@ const ProfilePage = () => {
         .center-content {
           display: flex;
           place-content: center;
+        }
+
+        .stat-cards {
+          padding: 20px 0;
         }
       `}</style>
     </>

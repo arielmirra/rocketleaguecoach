@@ -1,32 +1,27 @@
 import React from "react"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
-import CardMedia from "@mui/material/CardMedia"
 import Typography from "@mui/material/Typography"
 import { CardActionArea } from "@mui/material"
-import { Segment, Stat, Stats } from "./Tracker"
-import { plainToClass } from "class-transformer"
+import useTranslation from "next-translate/useTranslation"
 
-const StatCard = ({ segment }) => {
-  const stats: Stats = segment.stats
-  const stat = stats.goals
+function roundIfNecessary(n: number) {
+  return Number.isInteger(n) ? n : n.toFixed(2)
+}
 
+const StatCard = ({ stat }) => {
+  const { t } = useTranslation("common")
   return (
     <>
       <Card sx={{ maxWidth: 345 }}>
         <CardActionArea>
-          <CardMedia
-            component="img"
-            height="100"
-            image="/vercel.svg"
-            alt="card media"
-          />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {stat.displayName}
+              {t(stat.displayName)}: {roundIfNecessary(stat.value)}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {stat.value}
+            <Typography variant="body1" color="text.primary">
+              Rango mundial: {stat.rank} (Top{" "}
+              {roundIfNecessary(100 - stat.percentile)}%)
             </Typography>
           </CardContent>
         </CardActionArea>
