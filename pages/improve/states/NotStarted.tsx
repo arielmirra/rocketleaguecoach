@@ -1,11 +1,11 @@
 import { Typography } from "@mui/material"
 import { useFormik } from "formik"
-import { MatTextField, MatButton } from "../../../hooks/formik"
+import { MatButton, MatInput } from "../../../hooks/formik"
 import * as Yup from "yup"
 import { NotStartedProps } from "../../../types/improve/types"
 import { notStartedStyles } from "../../../styles/improve/styles"
 
-export default function NotStarted(props: NotStartedProps) {
+const NotStarted = (props: NotStartedProps): React.ReactElement => {
   const formik = useFormik({
     initialValues: {
       hours: "",
@@ -22,7 +22,18 @@ export default function NotStarted(props: NotStartedProps) {
     <div className="improve-not-started-container">
       <Typography variant="h5">Nueva sesión</Typography>
       <form onSubmit={formik.handleSubmit}>
-        <MatTextField formik={formik} inputId="hours" label="" />
+        <div className="text-inputs">
+          <MatInput
+            formik={formik}
+            inputId="hours"
+            suffix="hs"
+          />
+          {/* <MatInput
+            formik={formik}
+            inputId="minutes"
+            suffix="m"
+          /> */}
+        </div>
         <MatButton text="Entrenar!" type="submit" size="large" />
       </form>
 
@@ -30,3 +41,5 @@ export default function NotStarted(props: NotStartedProps) {
     </div>
   )
 }
+
+export default NotStarted
