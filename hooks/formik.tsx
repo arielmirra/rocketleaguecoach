@@ -1,7 +1,13 @@
 import React from "react"
 import { Button, TextField } from "@mui/material"
 
-export const MatTextField = ({ formik, inputId, label, ...props }) => {
+interface Props {
+  formik: any
+  inputId: string
+  label: string
+}
+
+export const MatTextField = ({ formik, inputId, label, ...props }: Props) => {
   return (
     <TextField
       fullWidth
@@ -20,15 +26,15 @@ export const MatTextField = ({ formik, inputId, label, ...props }) => {
   )
 }
 
-export const MatCheckbox = ({ formik, inputId, label, ...props }) => {
+export const MatCheckbox = ({ formik, inputId, label, ...props }: Props) => {
   return <></>
 }
 
-export const MatSelect = ({ formik, inputId, label, ...props }) => {
+export const MatSelect = ({ formik, inputId, label, ...props }: Props) => {
   return <></>
 }
 
-export const MatButton = ({ text, ...props }) => {
+export const MatButton = ({ text, ...props }: any) => {
   return (
     <Button color="primary" variant="contained" fullWidth {...props}>
       {text}

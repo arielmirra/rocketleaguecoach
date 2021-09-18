@@ -4,12 +4,17 @@ import CardContent from "@mui/material/CardContent"
 import Typography from "@mui/material/Typography"
 import { CardActionArea } from "@mui/material"
 import useTranslation from "next-translate/useTranslation"
+import { Stat } from "../models/Tracker"
 
 function roundIfNecessary(n: number) {
   return Number.isInteger(n) ? n : n.toFixed(2)
 }
 
-const StatCard = ({ stat }) => {
+interface Props {
+  stat: Stat
+}
+
+function StatCard({ stat }: Props) {
   const { t } = useTranslation("common")
   return (
     <>

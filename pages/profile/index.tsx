@@ -18,16 +18,15 @@ import { Create as CreateIcon } from "@mui/icons-material"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
 import { TrackerStats } from "../../models/Tracker"
-import { plainToClass } from "class-transformer"
 import { makeStyles } from "@mui/styles"
 import LifetimeStatsCards from "../../components/LifetimeStatsCards"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   large: {
     height: "100px",
     width: "100px",
   },
-}))
+})
 
 async function getTrackerStats(epicID: string) {
   if (epicID) {
@@ -59,10 +58,7 @@ const ProfilePage = () => {
     getEpicIDFromId(AuthUser.id).then((id) => {
       setEpicID(id)
       getTrackerStats(id).then((data) => {
-        const statistics = plainToClass(TrackerStats, data.data, {
-          enableImplicitConversion: true,
-        })
-        console.log(data.data)
+        const statistics: TrackerStats = data.data
         console.log(statistics)
         console.log(statistics.segments)
         setStats(statistics)
@@ -92,9 +88,12 @@ const ProfilePage = () => {
         <Grid container item xs={4} justifyContent="center">
           <Avatar
             className={classes.large}
-            alt={AuthUser.displayName}
-            src={AuthUser.photoURL}
-            title={AuthUser.displayName}
+            alt={AuthUser.displayName || ""}
+            src={
+              AuthUser.photoURL ||
+              "https://randomuser.me/api/portraits/lego/5.jpg"
+            }
+            title={AuthUser.displayName || ""}
           />
         </Grid>
         <Grid item xs={8} container direction="column" justifyContent="center">

@@ -4,41 +4,42 @@ import InTraining from "./states/InTraining"
 import NotStarted from "./states/NotStarted"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
-import { improveInitialState, SubNavState } from "./utils"
-import { ImproveState } from "./types"
+import { improveInitialState } from "./utils"
+import { ImproveState, SubNavState } from "./types"
 import { improvePageStyles } from "./styles"
 
-/**
- * ImprovePage
- */
+function getNumberFromLocalStorage(key: string) {
+  const item = localStorage.getItem("finishMs")
+  return item ? +item : 0
+}
+
 const ImprovePage = () => {
   const authUser = useAuthUser()
   const [state, setState] = useState<ImproveState>(improveInitialState)
 
   /**
-   * Manage state along with localStorage 
+   * Manage state along with localStorage
    */
   useEffect(() => {
-    let localStorageData
+    let localStorageData: ImproveState
     if (typeof window !== "undefined") {
       localStorageData = {
-        subNavState: localStorage.getItem("subNavState"),
-        finishMs: +localStorage.getItem("finishMs"),
-        hours: +localStorage.getItem("hours"),
+        subNavState:
+          (localStorage.getItem("subNavState") as SubNavState) ||
+          SubNavState.notStarted,
+        startMs: getNumberFromLocalStorage("startMs"),
+        finishMs: getNumberFromLocalStorage("finishMs"),
+        hours: getNumberFromLocalStorage("hours"),
       }
+
+      setState(localStorageData)
     }
-    setState({
-      subNavState: localStorageData.subNavState || SubNavState.notStarted,
-      startMs: localStorageData.startMs || 0,
-      finishMs: localStorageData.finishMs || 0,
-      hours: localStorageData.hours || 0,
-    })
 
     return () => {
       localStorage.setItem("subNavState", SubNavState.notStarted)
     }
   }, [])
-  
+
   return (
     <>
       <div className="improve-container">

@@ -1,18 +1,15 @@
-import { Type } from "class-transformer"
-
-export class TrackerStats {
-  @Type(() => Segment)
+export interface TrackerStats {
   segments: Segment[]
 }
 
-export class Segment {
+export interface Segment {
   attributes: any
   metadata: Metadata
   stats: Stats
   type: string
 }
 
-export class Stats {
+export interface Stats {
   // overview stats
   assists: Stat
   goalShotRatio: Stat
@@ -34,7 +31,7 @@ export class Stats {
   winStreak: Stat
 }
 
-export class Stat {
+export interface Stat {
   category: string
   displayName: string
   rank: number
@@ -43,11 +40,11 @@ export class Stat {
   value: number
 }
 
-export class Metadata {
+export interface Metadata {
   name: string
 }
 
-export class Attributes {
+export interface Attributes {
   playlistId: number
   season: number
 }

@@ -16,7 +16,6 @@
     "@mui/material": "^5.0.0-rc.1",
     "@mui/styled-engine-sc": "^5.0.0-rc.1",
     "@mui/styles": "^5.0.0-rc.1",
-    "class-transformer": "^0.4.0",
     "date-fns": "^2.23.0",
     "firebase": "^9.0.2",
     "firebase-admin": "^9.11.1",

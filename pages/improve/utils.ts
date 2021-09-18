@@ -1,9 +1,5 @@
-import type { CountdownResult, ImproveState } from './types'
-
-export enum SubNavState {
-  notStarted = 'notStarted',
-  inTraining = 'inTraining',
-}
+import type { CountdownResult, ImproveState } from "./types"
+import { SubNavState } from "./types"
 
 export const improveInitialState: ImproveState = {
   subNavState: SubNavState.notStarted,
@@ -16,7 +12,7 @@ export const improveInitialState: ImproveState = {
  * Given finish time in ms, return formatted hours:minutes:seconds left
  * until that time.
  */
-export const getTimeLeft = (finishMs): CountdownResult => {
+export const getTimeLeft = (finishMs: number): CountdownResult => {
   const finishDate = new Date(finishMs)
   const today = new Date()
   const diffTime = finishDate.getMilliseconds() - today.getMilliseconds()

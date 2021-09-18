@@ -1,6 +1,6 @@
 import Head from "next/head"
 import Google from "../components/Icons/Google"
-import { Typography } from "@mui/material"
+import { Theme, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 import { loginWithGoogle } from "../firebase/client"
 import { AuthAction, withAuthUser } from "next-firebase-auth"
@@ -9,11 +9,11 @@ import Button from "../components/Button"
 import Logo from "../components/Icons/Logo"
 import { colors } from "../styles/theme"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   text: {
-    color: theme.white,
+    color: "white",
   },
-}))
+})
 
 const Home = () => {
   const classes = useStyles()

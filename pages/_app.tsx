@@ -6,14 +6,21 @@ import Head from "next/head"
 import { Typography } from "@mui/material"
 import styles, { globalStyles } from "./styles"
 import initAuth from "../initAuth"
-import type { AppProps /*, AppContext */ } from "next/app"
+import type AppProps from "next/app"
 import { ThemeProvider } from "@mui/material/styles"
 import { theme } from "../styles/theme"
 import "reflect-metadata"
 
 initAuth()
 
-function MyApp({ Component, pageProps }: AppProps) {
+interface MyAppProps extends AppProps {
+  Component: any
+  pageProps: any
+}
+
+function MyApp(props: MyAppProps) {
+  const { Component, pageProps } = props
+
   return (
     <>
       <div className="main-container">

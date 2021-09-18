@@ -12,8 +12,6 @@ import { formatTime, inTrainingMockData } from "../utils"
 import { InTrainingProps, RLCodeProps } from "../types"
 import { useCountdown } from "../hooks"
 
-
-
 const useCloseButtonStyles = makeStyles({
   root: {
     position: "absolute",
@@ -23,17 +21,21 @@ const useCloseButtonStyles = makeStyles({
 })
 
 export default function InTraining(props: InTrainingProps) {
-  const timeLeft = useCountdown({finishMs: props.finishMs})
+  const timeLeft = useCountdown({ finishMs: props.finishMs })
   const closeButtonStyles = useCloseButtonStyles()
 
   const verticalProgressBarData = useMemo(() => {
-    const timeDivisionSum = inTrainingMockData.timeDivision.reduce((a, b) => a + b)
+    const timeDivisionSum = inTrainingMockData.timeDivision.reduce(
+      (a, b) => a + b
+    )
     const totalMinutes = props.hours * 60
     return {
       minutes: inTrainingMockData.timeDivision.map(
         (t) => (t / timeDivisionSum) * totalMinutes
       ),
-      heights: inTrainingMockData.timeDivision.map((t) => (t / timeDivisionSum) * 100),
+      heights: inTrainingMockData.timeDivision.map(
+        (t) => (t / timeDivisionSum) * 100
+      ),
     }
   }, [props.hours, inTrainingMockData.timeDivision])
 
@@ -74,12 +76,12 @@ export default function InTraining(props: InTrainingProps) {
  * Vertical Progress Bar
  * totalHours: divide progress bar into hours
  */
-const VerticalProgressBar = ({ verticalProgressBarData }) => {
+const VerticalProgressBar = ({ verticalProgressBarData }: any) => {
   return (
     <>
       <div className="vertical-progress-bar">
         <div className="progress-bar">
-          {verticalProgressBarData.heights.map((h, i) => (
+          {verticalProgressBarData.heights.map((h: number, i: number) => (
             <div
               key={`progress-${i}`}
               style={{
@@ -90,7 +92,7 @@ const VerticalProgressBar = ({ verticalProgressBarData }) => {
           ))}
         </div>
         <div className="durations">
-          {verticalProgressBarData.minutes.map((m, i) => (
+          {verticalProgressBarData.minutes.map((m: number, i: number) => (
             <div
               key={`minute-${i}`}
               style={{ height: `${verticalProgressBarData.heights[i]}%` }}
@@ -105,13 +107,18 @@ const VerticalProgressBar = ({ verticalProgressBarData }) => {
   )
 }
 
-const SkillDescriptionItem = ({ skillName, codes }) => {
+interface Props {
+  skillName: any
+  codes: any
+}
+
+const SkillDescriptionItem = ({ skillName, codes }: Props) => {
   return (
     <>
       <div className="skill-description-item">
         <Typography variant="h6">{skillName}</Typography>
         <List>
-          {codes.map((code, i) => (
+          {codes.map((code: any, i: number) => (
             <ListItem key={`${skillName.toLowerCase()}-code-${i}`}>
               <Typography>{code.name}</Typography>
               <RLCodeText>{code.code}</RLCodeText>

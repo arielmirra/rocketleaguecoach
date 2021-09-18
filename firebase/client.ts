@@ -9,7 +9,10 @@ import {
 } from "firebase/firestore"
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 
-const firebaseConfig = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG)
+const jsonString: string = process.env.NEXT_PUBLIC_FIREBASE_CONFIG
+  ? process.env.NEXT_PUBLIC_FIREBASE_CONFIG
+  : "{}"
+const firebaseConfig = JSON.parse(jsonString)
 if (!getApps().length) {
   initializeApp(firebaseConfig)
 }
@@ -25,9 +28,10 @@ export const loginWithGoogle = async () => {
   return await signInWithPopup(auth, provider)
 }
 
-export const saveEpicID = (id, epicID) => {
+export const saveEpicID = (id: string | null, epicID: string) => {
   try {
-    const document = doc(db, "epicIDs", id)
+    const uid = id ? id : ""
+    const document = doc(db, "epicIDs", uid)
     const data = { epicID }
     setDoc(document, data)
   } catch (e) {
@@ -44,7 +48,7 @@ export const getEpicIDs = async () => {
   }
 }
 
-export const getEpicIDFromId = async (id) => {
+export const getEpicIDFromId = async (id: any) => {
   try {
     const docRef = doc(db, "epicIDs", id)
     const docSnap = await getDoc(docRef)
