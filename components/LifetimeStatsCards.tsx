@@ -1,6 +1,6 @@
 import React from "react"
 import { Grid } from "@mui/material"
-import { Stats } from "./Tracker"
+import { Stats } from "../models/Tracker"
 import StatCard from "./StatCard"
 
 const LifetimeStatsCards = ({ segment }) => {

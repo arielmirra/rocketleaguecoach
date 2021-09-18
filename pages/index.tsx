@@ -41,7 +41,7 @@ const Home = () => {
         </Typography>
 
         <div className="login-button">
-          <Button onClick={googleAuth}>
+          <Button onClick={googleAuth} disabled={false}>
             <Google /> <Typography>Inicia sesión con Google</Typography>
           </Button>
         </div>

@@ -1,9 +1,10 @@
-import { DEFAULT_LANGUAGE } from "constants/locale"
-
 const isDateTimeFormatSupported =
   typeof Intl !== "undefined" && Intl.DateTimeFormat
 
-export const formatDate = (timestamp, { language = DEFAULT_LANGUAGE } = {}) => {
+export const formatDate = (
+  timestamp,
+  { language = process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE } = {}
+) => {
   const date = new Date(timestamp)
 
   if (!isDateTimeFormatSupported) {
@@ -30,5 +31,7 @@ export const formatDate = (timestamp, { language = DEFAULT_LANGUAGE } = {}) => {
 }
 
 export default function useDateTimeFormat(timestamp) {
-  return formatDate(timestamp, { language: DEFAULT_LANGUAGE })
+  return formatDate(timestamp, {
+    language: process.env.NEXT_PUBLIC_DEFAULT_LANGUAGE,
+  })
 }

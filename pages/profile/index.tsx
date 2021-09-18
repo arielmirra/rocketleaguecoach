@@ -17,7 +17,7 @@ import {
 import { Create as CreateIcon } from "@mui/icons-material"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
-import { TrackerStats } from "../../components/Tracker"
+import { TrackerStats } from "../../models/Tracker"
 import { plainToClass } from "class-transformer"
 import { makeStyles } from "@mui/styles"
 import LifetimeStatsCards from "../../components/LifetimeStatsCards"
