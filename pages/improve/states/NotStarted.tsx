@@ -2,8 +2,10 @@ import { Typography } from "@mui/material"
 import { useFormik } from "formik"
 import { MatTextField, MatButton } from "../../../hooks/formik"
 import * as Yup from "yup"
+import { NotStartedProps } from "../types"
+import { notStartedStyles } from "../styles"
 
-export default function NotStartedSubPage({ onStart }) {
+export default function NotStarted(props: NotStartedProps) {
   const formik = useFormik({
     initialValues: {
       hours: "",
@@ -12,7 +14,7 @@ export default function NotStartedSubPage({ onStart }) {
       hours: Yup.number().required("Required"),
     }),
     onSubmit: (values) => {
-      onStart(parseInt(values.hours), new Date().getTime())
+      props.onStart(parseInt(values.hours), new Date().getTime())
     },
   })
 
@@ -24,20 +26,7 @@ export default function NotStartedSubPage({ onStart }) {
         <MatButton text="Entrenar!" type="submit" size="large" />
       </form>
 
-      <style jsx>{`
-        .improve-not-started-container {
-          height: 100%;
-          display: flex;
-          flex-flow: column nowrap;
-          align-items: center;
-          justify-content: center;
-        }
-        .improve-container > form {
-        }
-        .improve-container > form > .MuiTextField-root {
-          margin-bottom: 30px;
-        }
-      `}</style>
+      <style jsx>{notStartedStyles}</style>
     </div>
   )
 }

@@ -1,22 +1,23 @@
 import { addHours } from "date-fns"
 import { useEffect, useState } from "react"
-import InTrainingSubPage from "./states/InTraining"
-import NotStartedSubPage from "./states/NotStarted"
+import InTraining from "./states/InTraining"
+import NotStarted from "./states/NotStarted"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
+import { improveInitialState, SubNavState } from "./utils"
+import { ImproveState } from "./types"
+import { improvePageStyles } from "./styles"
 
-const subNavStates = { notStarted: "0", inTraining: "1" }
-const initialState = {
-  subNavState: subNavStates.notStarted,
-  startMs: 0,
-  finishMs: 0,
-  hours: 0,
-}
-
+/**
+ * ImprovePage
+ */
 const ImprovePage = () => {
-  const AuthUser = useAuthUser()
-  const [state, setState] = useState(initialState)
+  const authUser = useAuthUser()
+  const [state, setState] = useState<ImproveState>(improveInitialState)
 
+  /**
+   * Manage state along with localStorage 
+   */
   useEffect(() => {
     let localStorageData
     if (typeof window !== "undefined") {
@@ -27,28 +28,29 @@ const ImprovePage = () => {
       }
     }
     setState({
-      subNavState: localStorageData.subNavState || subNavStates.notStarted,
+      subNavState: localStorageData.subNavState || SubNavState.notStarted,
       startMs: localStorageData.startMs || 0,
       finishMs: localStorageData.finishMs || 0,
       hours: localStorageData.hours || 0,
     })
 
     return () => {
-      localStorage.setItem("subNavState", subNavStates.notStarted)
+      localStorage.setItem("subNavState", SubNavState.notStarted)
     }
   }, [])
+  
   return (
     <>
       <div className="improve-container">
-        {state.subNavState === subNavStates.notStarted && (
-          <NotStartedSubPage
+        {state.subNavState === SubNavState.notStarted && (
+          <NotStarted
             onStart={(hours, startMs) => {
               const finishMs = addHours(new Date(startMs), hours).getTime()
-              localStorage.setItem("subNavState", subNavStates.inTraining)
+              localStorage.setItem("subNavState", SubNavState.inTraining)
               localStorage.setItem("finishMs", finishMs.toString())
               localStorage.setItem("hours", hours.toString())
               setState({
-                subNavState: subNavStates.inTraining,
+                subNavState: SubNavState.inTraining,
                 startMs,
                 finishMs,
                 hours,
@@ -56,18 +58,13 @@ const ImprovePage = () => {
             }}
           />
         )}
-        {state.subNavState === subNavStates.inTraining && (
-          <InTrainingSubPage
+        {state.subNavState === SubNavState.inTraining && (
+          <InTraining
             finishMs={state.finishMs}
             hours={state.hours}
             onCancel={() => {
-              localStorage.setItem("subNavState", subNavStates.notStarted)
-              setState({
-                subNavState: subNavStates.notStarted,
-                startMs: 0,
-                finishMs: 0,
-                hours: 0,
-              })
+              localStorage.setItem("subNavState", SubNavState.notStarted)
+              setState(improveInitialState)
             }}
             onDone={(newSessionData) => {
               console.log("new session done", newSessionData)
@@ -75,12 +72,7 @@ const ImprovePage = () => {
           />
         )}
       </div>
-      <style jsx>{`
-        .improve-container {
-          height: 100%;
-          width: 100%;
-        }
-      `}</style>
+      <style jsx>{improvePageStyles}</style>
     </>
   )
 }

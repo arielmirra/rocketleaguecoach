@@ -1,4 +1,3 @@
-import useCountdown from "../../../hooks/useCountdown"
 import { useEffect, useMemo } from "react"
 import { colors, verticalProgressBarColors } from "../../../styles/theme"
 import { IconButton, List, ListItem, Typography } from "@mui/material"
@@ -9,65 +8,11 @@ import {
   verticalProgressBarStyles,
   skillDescriptionItemStyles,
 } from "../styles"
+import { formatTime, inTrainingMockData } from "../utils"
+import { InTrainingProps, RLCodeProps } from "../types"
+import { useCountdown } from "../hooks"
 
-const mockData = {
-  timeDivision: [1, 2, 4, 1, 2],
-  mockSkills: [
-    {
-      id: "0",
-      skillName: "Ataque",
-      codes: [
-        { name: "0aaaa0123kas", code: "NOTO-0934-IE03-MBZK" },
-        { name: "Full agresivo", code: "JREI-2392-4958-JCOW" },
-      ],
-    },
-    {
-      id: "1",
-      skillName: "Defensa",
-      codes: [{ name: "Atajar rocket league ", code: "J39D-NWHA-JAL0-SJFK" }],
-    },
-    {
-      id: "2",
-      skillName: "Posicionamiento",
-      codes: [
-        { name: "Positional tactics", code: "J19Y-H6XN-LA1S-KCHS" },
-        { name: "Positions 101", code: "1J8V-SH9W-N23O-2O83" },
-        { name: "P0gger5", code: "K49X-KAL1-KDHR-4850" },
-        { name: "Posiciones by Drakata", code: "M10J-K3OH-IO23-HXNM" },
-        { name: "Positions", code: "1K02-FK0X-AM1L-D888" },
-      ],
-    },
-    {
-      id: "3",
-      skillName: "Precision",
-      codes: [
-        { name: "Goal precisions #31", code: "J10S-SDK1-SLQL-QQSF" },
-        { name: "General-precision", code: "SD02-FGHJ-31J4-XMAL" },
-      ],
-    },
-    {
-      id: "4",
-      skillName: "Pases",
-      codes: [
-        { name: "Pases en pared", code: "1M0C-KSA1-KT60-6NUM" },
-        { name: "Passing forward1", code: "12DG-NLY6-KD34-KFKK" },
-      ],
-    },
-  ],
-}
 
-const formatTime = (timeLeft) => {
-  const h = timeLeft.hours
-  const m =
-    timeLeft.minutes.toString().length === 1
-      ? `0${timeLeft.minutes}`
-      : timeLeft.minutes
-  const s =
-    timeLeft.seconds.toString().length === 1
-      ? `0${timeLeft.seconds}`
-      : timeLeft.seconds
-  return `${h}:${m}:${s}`
-}
 
 const useCloseButtonStyles = makeStyles({
   root: {
@@ -77,31 +22,26 @@ const useCloseButtonStyles = makeStyles({
   },
 })
 
-export default function InTrainingSubPage({
-  finishMs,
-  hours,
-  onCancel,
-  onDone,
-}) {
-  const timeLeft = useCountdown(finishMs)
+export default function InTraining(props: InTrainingProps) {
+  const timeLeft = useCountdown({finishMs: props.finishMs})
   const closeButtonStyles = useCloseButtonStyles()
 
   const verticalProgressBarData = useMemo(() => {
-    const timeDivisionSum = mockData.timeDivision.reduce((a, b) => a + b)
-    const totalMinutes = hours * 60
+    const timeDivisionSum = inTrainingMockData.timeDivision.reduce((a, b) => a + b)
+    const totalMinutes = props.hours * 60
     return {
-      minutes: mockData.timeDivision.map(
+      minutes: inTrainingMockData.timeDivision.map(
         (t) => (t / timeDivisionSum) * totalMinutes
       ),
-      heights: mockData.timeDivision.map((t) => (t / timeDivisionSum) * 100),
+      heights: inTrainingMockData.timeDivision.map((t) => (t / timeDivisionSum) * 100),
     }
-  }, [hours, mockData.timeDivision])
+  }, [props.hours, inTrainingMockData.timeDivision])
 
   return (
     <>
       <div className="improve-training-container">
         <IconButton
-          onClick={onCancel}
+          onClick={props.onCancel}
           classes={closeButtonStyles}
           color="primary"
         >
@@ -113,7 +53,7 @@ export default function InTrainingSubPage({
             verticalProgressBarData={verticalProgressBarData}
           />
           <div className="skills-codes-container">
-            {mockData.mockSkills.map((skill) => {
+            {inTrainingMockData.mockSkills.map((skill) => {
               return (
                 <SkillDescriptionItem
                   key={`skill-${skill.id}`}
@@ -192,7 +132,7 @@ const useRLCodeTextStyles = makeStyles({
   },
 })
 
-const RLCodeText = ({ text }) => {
+const RLCodeText = (props: RLCodeProps) => {
   const RLCodeTextStyles = useRLCodeTextStyles()
   useEffect(() => {
     if (typeof navigator === "undefined") {
@@ -202,8 +142,8 @@ const RLCodeText = ({ text }) => {
     }
   }, [])
   return (
-    <div onClick={() => navigator.clipboard.writeText(text)}>
-      <Typography classes={RLCodeTextStyles}>{text}</Typography>
+    <div onClick={() => navigator.clipboard.writeText(props.children)}>
+      <Typography classes={RLCodeTextStyles}>{props.children}</Typography>
     </div>
   )
 }

@@ -1,5 +1,12 @@
 import css from 'styled-jsx/css';
 
+export const improvePageStyles = css`
+  .improve-container {
+    height: 100%;
+    width: 100%;
+  }
+`
+
 export const inTrainingStyles = css`
   .improve-training-container {
     position: relative;
@@ -51,3 +58,18 @@ export const skillDescriptionItemStyles = css`
   .skill-description-item {
   }
 `;
+
+export const notStartedStyles = css`
+  .improve-not-started-container {
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .improve-container > form {
+  }
+  .improve-container > form > .MuiTextField-root {
+    margin-bottom: 30px;
+  }
+`
