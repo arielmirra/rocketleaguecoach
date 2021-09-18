@@ -25,6 +25,8 @@ export const globalStyles = css.global`
   }
 `
 
+export const globalPadding = "20px"
+
 export default css`
   .main-container {
     display: grid;
@@ -70,7 +72,7 @@ export default css`
   #content {
     height: 100%;
     width: 100%;
-    padding: 20px;
+    padding: ${globalPadding};
     display: flex;
     flex-direction: column;
     overflow-y: scroll;

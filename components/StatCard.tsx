@@ -1,8 +1,5 @@
 import React from "react"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
-import { CardActionArea } from "@mui/material"
+import { Card, CardActionArea, CardContent, Typography } from "@mui/material"
 import useTranslation from "next-translate/useTranslation"
 import { Stat } from "../models/Tracker"
 
@@ -11,22 +8,31 @@ function roundIfNecessary(n: number) {
 }
 
 interface Props {
-  stat: Stat
+  stat : Stat,
+  percentage? : boolean
 }
 
-function StatCard({ stat }: Props) {
+const StatCard = ({ stat, percentage } : Props) => {
   const { t } = useTranslation("common")
   return (
     <>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{height: '100%', display: 'flex', placeContent: 'center'}}>
         <CardActionArea>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {t(stat.displayName)}: {roundIfNecessary(stat.value)}
+            <Typography gutterBottom variant="h5" align='center'>
+              {t(stat.displayName)}
             </Typography>
-            <Typography variant="body1" color="text.primary">
-              Rango mundial: {stat.rank} (Top{" "}
-              {roundIfNecessary(100 - stat.percentile)}%)
+            <Typography gutterBottom variant="h5" align='center'>
+              {`${roundIfNecessary(stat.value)}${percentage ? ' %' : ''}`}
+            </Typography>
+            <Typography variant="subtitle1" color="text.primary" align='center'>
+              Rango mundial
+            </Typography>
+            <Typography variant="subtitle2" color="text.primary" align='center'>
+              {stat.rank || "N/A"}
+            </Typography>
+            <Typography variant="subtitle2" color="text.primary" align='center'>
+              Top {stat.percentile ? `${roundIfNecessary(100 - stat.percentile)}%` : "N/A"}
             </Typography>
           </CardContent>
         </CardActionArea>

@@ -18,15 +18,10 @@ import { Create as CreateIcon } from "@mui/icons-material"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
 import { TrackerStats } from "../../models/Tracker"
-import { makeStyles } from "@mui/styles"
 import LifetimeStatsCards from "../../components/LifetimeStatsCards"
-
-const useStyles = makeStyles({
-  large: {
-    height: "100px",
-    width: "100px",
-  },
-})
+import RankBoard from "../../components/RankBoard"
+import { globalPadding } from "../../styles/styles"
+import * as RemoteData from "../../models/RemoteData"
 
 async function getTrackerStats(epicID: string) {
   if (epicID) {
@@ -46,118 +41,173 @@ async function getTrackerStats(epicID: string) {
   } else return null
 }
 
+interface HeaderProps {
+  name: string | null
+  photoURL: string | null
+  epicID: RemoteData.RemoteData<string>
+  onEditEpicID: () => void
+}
+
+function Header({ name, photoURL, epicID, onEditEpicID }: HeaderProps) {
+  return (
+    <Grid container direction="row" spacing={2}>
+      <Grid container item xs={4} justifyContent="center">
+        <Avatar
+          sx={{ width: 100, height: 100 }}
+          alt={name || ''}
+          src={photoURL || ''}
+          title={name || ''}
+        />
+      </Grid>
+      <Grid item xs={8} container direction="column" justifyContent="center">
+        <Typography variant="h5">{name}</Typography>
+        {epicID.state === "present" && epicID.data && (
+          <Grid container direction="row" alignItems="center" spacing={2}>
+            <Grid item>
+              <Typography variant="h6">{epicID.data}</Typography>
+            </Grid>
+            <Grid item>
+              <IconButton onClick={onEditEpicID}>
+                <CreateIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        )}
+      </Grid>
+    </Grid>
+  )
+}
+
+interface EditEpicIDModalProps {
+  isOpen: boolean
+  onClose: () => void
+  submitting: boolean
+  formik: any
+}
+
+function EditEpicIDModal({
+                           isOpen,
+                           onClose,
+                           submitting,
+                           formik,
+                         }: EditEpicIDModalProps) {
+  return (
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">Ingresá tu Epic ID</DialogTitle>
+      <DialogContent>
+        {submitting ? (
+          <div className="center-content">
+            <CircularProgress />
+          </div>
+        ) : (
+          <form onSubmit={formik.handleSubmit}>
+            <MatTextField inputId="epicID" formik={formik} label="Epic ID" />
+          </form>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="primary" disabled={submitting}>
+          Cancelar
+        </Button>
+        <Button
+          onClick={formik.submitForm}
+          color="primary"
+          autoFocus
+          disabled={submitting}
+        >
+          Guardar
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
 const ProfilePage = () => {
   const AuthUser = useAuthUser()
-  const classes = useStyles()
   const [isModalOpen, setModalOpened] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [epicID, setEpicID] = useState("")
-  const [stats, setStats] = useState<TrackerStats>({ segments: [] })
+  const [epicID, setEpicID] = useState<RemoteData.RemoteData<string>>(
+    RemoteData.notAsked()
+  )
+  const [stats, setStats] = useState<RemoteData.RemoteData<TrackerStats>>(
+    RemoteData.notAsked()
+  )
+
+  const getSavedEpicId = async () => {
+    setEpicID(RemoteData.loading())
+    const epicID = await getEpicIDFromId(AuthUser.id)
+    setEpicID(RemoteData.present(epicID))
+    formik.values.epicID = epicID
+  }
+
+  const fetchStats = async (epicID: string) => {
+    setStats(RemoteData.loading())
+    const data = await getTrackerStats(epicID)
+    const statistics: TrackerStats = data.data
+    console.log(data.data)
+    console.log(statistics)
+    console.log(statistics.segments)
+    setStats(RemoteData.present(statistics))
+  }
 
   useEffect(() => {
-    getEpicIDFromId(AuthUser.id).then((id) => {
-      setEpicID(id)
-      getTrackerStats(id).then((data) => {
-        const statistics: TrackerStats = data.data
-        console.log(statistics)
-        console.log(statistics.segments)
-        setStats(statistics)
-      })
-    })
+    getSavedEpicId()
   }, [])
+
+  useEffect(() => {
+    if (epicID.state === "present") {
+      if (epicID.data) {
+        fetchStats(epicID.data)
+      } else {
+        setStats(RemoteData.notAsked())
+      }
+    }
+  }, [epicID])
 
   const closeModal = () => setModalOpened(false)
   const openModal = () => setModalOpened(true)
 
   const formik = useFormik({
     initialValues: {
-      epicID: epicID ?? "",
+      epicID: "",
     },
     onSubmit: async (values) => {
-      setSubmitting(true)
-      setEpicID(values.epicID)
+      setEpicID(RemoteData.loading())
       saveEpicID(AuthUser.id, values.epicID)
       closeModal()
-      setSubmitting(false)
+      setEpicID(RemoteData.present(values.epicID))
     },
   })
 
   return (
     <>
-      <Grid container direction="row" spacing={2}>
-        <Grid container item xs={4} justifyContent="center">
-          <Avatar
-            className={classes.large}
-            alt={AuthUser.displayName || ""}
-            src={
-              AuthUser.photoURL ||
-              "https://randomuser.me/api/portraits/lego/5.jpg"
-            }
-            title={AuthUser.displayName || ""}
-          />
-        </Grid>
-        <Grid item xs={8} container direction="column" justifyContent="center">
-          <Typography variant="h5">{AuthUser.displayName}</Typography>
-          {epicID && (
-            <Grid container direction="row" alignItems="center" spacing={2}>
-              <Grid item>
-                <Typography variant="h6">{epicID}</Typography>
-              </Grid>
-              <Grid item>
-                <IconButton onClick={openModal}>
-                  <CreateIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-          )}
-        </Grid>
-      </Grid>
-      {!epicID && (
-        <div id="save-epic-id" className="center-content">
+      <Header
+        name={AuthUser.displayName}
+        photoURL={AuthUser.photoURL}
+        epicID={epicID}
+        onEditEpicID={openModal}
+      />
+      {epicID.state === "present" && epicID.data === "" && (
+        <div className="center-content">
           <MatButton onClick={openModal} text="Ingresá tu Epic ID" />
         </div>
       )}
-      <Dialog
-        open={isModalOpen}
+      {stats.state === "present" && <GotStatsState stats={stats.data} />}
+      {(stats.state === "loading" || epicID.state === "loading") && (
+        <div className="center-content">
+          <CircularProgress />
+        </div>
+      )}
+      <EditEpicIDModal
+        isOpen={isModalOpen}
         onClose={closeModal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Ingresá tu Epic ID</DialogTitle>
-        <DialogContent>
-          {submitting ? (
-            <div className="center-content">
-              <CircularProgress />
-            </div>
-          ) : (
-            <form onSubmit={formik.handleSubmit}>
-              <MatTextField inputId="epicID" formik={formik} label="Epic ID" />
-            </form>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeModal} color="primary" disabled={submitting}>
-            Cancelar
-          </Button>
-          <Button
-            onClick={formik.submitForm}
-            color="primary"
-            autoFocus
-            disabled={submitting}
-          >
-            Guardar
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <div className="stat-cards">
-        {stats.segments.length ? (
-          <LifetimeStatsCards segment={stats.segments[0]} />
-        ) : (
-          <div className="center-content">
-            <CircularProgress />
-          </div>
-        )}
-      </div>
+        submitting={epicID.state === "loading"}
+        formik={formik}
+      />
       <style jsx>{`
         #save-epic-id {
           flex: 1;
@@ -167,6 +217,8 @@ const ProfilePage = () => {
         .center-content {
           display: flex;
           place-content: center;
+          align-items: center;
+          height: 100%;
         }
 
         .stat-cards {
@@ -182,3 +234,25 @@ export default withAuthUser({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   LoaderComponent: Loader,
 })(ProfilePage)
+
+interface GotStatsStateProps {
+  stats: TrackerStats
+}
+
+function GotStatsState({ stats }: GotStatsStateProps) {
+  return (
+    <Grid
+      container
+      direction="column"
+      rowSpacing={2}
+      sx={{ paddingTop: "20px" }}
+    >
+      <Grid item sx={{ margin: `0 -${globalPadding}` }}>
+        <RankBoard />
+      </Grid>
+      <Grid item>
+        <LifetimeStatsCards segment={stats.segments[0]} />
+      </Grid>
+    </Grid>
+  )
+}
