@@ -43,6 +43,7 @@ export default css`
     overflow: hidden;
     position: relative;
     flex: 1;
+    height: 100vh;
   }
 
   @media (min-width: ${breakpoints.mobile}) {

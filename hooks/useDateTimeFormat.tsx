@@ -8,26 +8,22 @@ export const formatDate = (
   const date = new Date(timestamp)
 
   if (!isDateTimeFormatSupported) {
-    const options = {
+    return date.toLocaleDateString(language, {
       weekday: "short",
       year: "numeric",
       month: "short",
       day: "numeric",
-    }
-
-    return date.toLocaleDateString(language, options)
+    })
   }
 
-  const options = {
+  return new Intl.DateTimeFormat(language, {
     year: "numeric",
     month: "numeric",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
     second: "numeric",
-  }
-
-  return new Intl.DateTimeFormat(language, options).format(date)
+  }).format(date)
 }
 
 export default function useDateTimeFormat(timestamp) {
