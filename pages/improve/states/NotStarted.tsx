@@ -2,8 +2,8 @@ import { Typography } from "@mui/material"
 import { useFormik } from "formik"
 import { MatTextField, MatButton } from "../../../hooks/formik"
 import * as Yup from "yup"
-import { NotStartedProps } from "../types"
-import { notStartedStyles } from "../styles"
+import { NotStartedProps } from "../../../types/improve/types"
+import { notStartedStyles } from "../../../styles/improve/styles"
 
 export default function NotStarted(props: NotStartedProps) {
   const formik = useFormik({

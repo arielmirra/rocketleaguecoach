@@ -4,12 +4,11 @@ import Improve from "../components/Icons/Improve"
 import Profile from "../components/Icons/Profile"
 import Head from "next/head"
 import { Typography } from "@mui/material"
-import styles, { globalStyles } from "./styles"
+import styles, { globalStyles } from "../styles/styles"
 import initAuth from "../initAuth"
 import type AppProps from "next/app"
 import { ThemeProvider } from "@mui/material/styles"
 import { theme } from "../styles/theme"
-import "reflect-metadata"
 
 initAuth()
 

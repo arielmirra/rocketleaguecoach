@@ -7,10 +7,10 @@ import {
   inTrainingStyles,
   verticalProgressBarStyles,
   skillDescriptionItemStyles,
-} from "../styles"
-import { formatTime, inTrainingMockData } from "../utils"
-import { InTrainingProps, RLCodeProps } from "../types"
-import { useCountdown } from "../hooks"
+} from "../../../styles/improve/styles"
+import { formatTime, inTrainingMockData } from "../../../utils/improve/utils"
+import { InTrainingProps, RLCodeProps } from "../../../types/improve/types"
+import { useCountdown } from "../../../hooks/improve/hooks"
 
 const useCloseButtonStyles = makeStyles({
   root: {

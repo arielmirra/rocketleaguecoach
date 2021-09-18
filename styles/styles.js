@@ -1,6 +1,6 @@
 import css from "styled-jsx/css"
 
-import { breakpoints, colors, fonts } from "../styles/theme"
+import { breakpoints, colors, fonts } from "./theme"
 
 const backgroundUrl =
   "https://steamuserimages-a.akamaihd.net/ugc/80339917954151566/3CB9761163B46FC5F38B822CCD28E7AE9AEFBAB5/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"

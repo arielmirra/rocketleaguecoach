@@ -4,9 +4,9 @@ import InTraining from "./states/InTraining"
 import NotStarted from "./states/NotStarted"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
-import { improveInitialState } from "./utils"
-import { ImproveState, SubNavState } from "./types"
-import { improvePageStyles } from "./styles"
+import { improveInitialState } from "../../utils/improve/utils"
+import { ImproveState, SubNavState } from "../../types/improve/types"
+import { improvePageStyles } from "../../styles/improve/styles"
 
 function getNumberFromLocalStorage(key: string) {
   const item = localStorage.getItem("finishMs")

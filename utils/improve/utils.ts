@@ -1,5 +1,5 @@
-import type { CountdownResult, ImproveState } from "./types"
-import { SubNavState } from "./types"
+import type { CountdownResult, ImproveState } from "../../types/improve/types"
+import { SubNavState } from "../../types/improve/types"
 
 export const improveInitialState: ImproveState = {
   subNavState: SubNavState.notStarted,
