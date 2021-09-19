@@ -2,10 +2,13 @@ import { Typography } from "@mui/material"
 import { useFormik } from "formik"
 import { MatButton, MatInput } from "../../../hooks/formik"
 import * as Yup from "yup"
-import { NotStartedProps } from "../../../types/improve/types"
-import { notStartedStyles } from "../../../styles/improve/styles"
+import { hoursInputStyle, notStartedStyles } from "../../../styles/improve/styles"
 
-const NotStarted = (props: NotStartedProps): React.ReactElement => {
+interface NotStartedProps {
+  onStart: (minutes: number, startMs: number) => void
+}
+
+const NotStarted = ({ onStart }: NotStartedProps) => {
   const formik = useFormik({
     initialValues: {
       hours: "",
@@ -13,21 +16,21 @@ const NotStarted = (props: NotStartedProps): React.ReactElement => {
     },
     validationSchema: Yup.object().shape(
       {
-        hours: Yup.number().when("minutes", {
+        hours: Yup.number().min(0).when("minutes", {
           is: (minutes: string) => !minutes || minutes.length === 0,
-          then: Yup.number().required(),
-          otherwise: Yup.number(),
+          then: Yup.number().min(0).required(),
+          otherwise: Yup.number().min(0),
         }),
-        minutes: Yup.number().when("hours", {
+        minutes: Yup.number().min(0).when("hours", {
           is: (hours: string) => !hours || hours.length === 0,
-          then: Yup.number().required(),
-          otherwise: Yup.number(),
+          then: Yup.number().min(0).required(),
+          otherwise: Yup.number().min(0),
         }),
       },
       [["hours", "minutes"]]
     ),
     onSubmit: (values) => {
-      props.onStart(
+      onStart(
         (parseInt(values.hours) || 0) * 60 + (parseInt(values.minutes) || 0),
         new Date().getTime()
       )
@@ -39,8 +42,19 @@ const NotStarted = (props: NotStartedProps): React.ReactElement => {
       <Typography variant="h5">Nueva sesión</Typography>
       <form onSubmit={formik.handleSubmit}>
         <div className="text-inputs">
-          <MatInput formik={formik} inputId="hours" suffix="hs" />
-          <MatInput formik={formik} inputId="minutes" suffix="m" />
+          <MatInput
+            formik={formik}
+            inputId="hours"
+            suffix="hs"
+            sx={hoursInputStyle}
+            type="number"
+            />
+          <MatInput
+            formik={formik}
+            inputId="minutes"
+            suffix="m"
+            type="number"
+          />
         </div>
         <MatButton text="Entrenar!" type="submit" size="large" />
       </form>

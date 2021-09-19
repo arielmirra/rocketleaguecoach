@@ -19,11 +19,11 @@ export const colors = {
 }
 
 export const verticalProgressBarColors = [
-  "#5FAD56",
-  "#643173",
-  "#C1666B",
-  "#E6AF2E",
-  "#2274A5",
+  "#FDCA40",
+  "#299de3",
+  "#5D2E8C",
+  "#CC2B2B",
+  "#00AF54",
 ]
 
 // Create a theme instance.

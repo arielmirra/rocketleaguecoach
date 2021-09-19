@@ -1,19 +1,25 @@
 import { Typography } from "@mui/material"
-import { useEffect } from "react"
-import { RLCodeTextStyles } from "../../styles/components/styles"
-import { RLCodeProps } from "../../types/components/types"
+import { RLCodeTextStyles } from "./styles"
 
-const RLCodeText = (props: RLCodeProps): React.ReactElement => {
-  useEffect(() => {
-    if (typeof navigator === "undefined") {
-      console.log("navigator is defined")
-    } else {
-      console.log("navigator is NOT defined")
-    }
-  }, [])
+interface RLCodeProps {
+  children: string
+}
+
+const RLCodeText = ({ children }: RLCodeProps) => {
+  
+  // TODO: add functionality to copy to clipboard on click
+  // useEffect(() => {
+  //   if (typeof navigator === "undefined") {
+  //     console.log("navigator is defined")
+  //   } else {
+  //     console.log("navigator is NOT defined")
+  //   }
+  // }, [])
+
   return (
-    <div onClick={() => navigator.clipboard.writeText(props.children)}>
-      <Typography sx={RLCodeTextStyles}>{props.children}</Typography>
+    // <div onClick={() => navigator.clipboard.writeText(children)}>
+    <div>
+      <Typography sx={RLCodeTextStyles}>{children}</Typography>
     </div>
   )
 }

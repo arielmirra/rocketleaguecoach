@@ -1,4 +1,4 @@
-import css from 'styled-jsx/css';
+import css from "styled-jsx/css"
 
 export const improvePageStyles = css`
   .improve-container {
@@ -13,7 +13,6 @@ export const inTrainingStyles = css`
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    padding-top: 20px;
     height: 100%;
   }
   .floating-icon-button {
@@ -21,44 +20,7 @@ export const inTrainingStyles = css`
     top: 10px;
     left: 10px;
   }
-  .improve-training-container > .content-container {
-    display: flex;
-    flex-flow: row nowrap;
-    flex: 1;
-    width: 100%;
-    height: 50vh;
-    padding: 30px 0;
-  }
-  .improve-training-container
-    > .content-container
-    > .skills-codes-container {
-    display: flex;
-    flex-flow: column nowrap;
-    flex: 1;
-    margin-left: 20px;
-  }
-`;
-
-export const verticalProgressBarStyles = css`
-  .vertical-progress-bar {
-    display: flex;
-    flex-flow: row nowrap;
-    margin: 10px;
-  }
-  .vertical-progress-bar > .progress-bar {
-    height: 100%;
-    width: 50px;
-    background-color: #949494;
-  }
-  .vertical-progress-bar > .durations {
-    height: 100%;
-  }   
-`;
-
-export const skillDescriptionItemStyles = css`
-  .skill-description-item {
-  }
-`;
+`
 
 export const notStartedStyles = css`
   .improve-not-started-container {
@@ -68,9 +30,19 @@ export const notStartedStyles = css`
     align-items: center;
     justify-content: center;
   }
-  .improve-container > form {
-  }
-  .improve-container > form > .MuiTextField-root {
+
+  .improve-not-started-container > form > .text-inputs {
+    display: flex;
+    flex-flow: row nowrap;
     margin-bottom: 30px;
   }
 `
+export const hoursInputStyle: any = {
+  marginRight: '8px',
+}
+
+export const closeButtonStyles: any = {
+    position: "absolute",
+    top: "10px",
+    left: "10px",
+}

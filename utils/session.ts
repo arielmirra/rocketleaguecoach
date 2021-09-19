@@ -1,4 +1,3 @@
-
 export enum SectionType {
   simple,
   training,
@@ -24,10 +23,54 @@ export interface TrainingSection extends BaseSection {
 
 export type Section = SimpleSection | TrainingSection
 
+export interface Session {
+  sections: Section[]
+  duration: number
+}
 
-const fractions = [0.1, 0.25, 0.1, 0.4, 0.15]
-export default function buildSession(minutes: number): Section[] {
-  return ([
+export interface CompletedSession {
+  id: string
+  userId: string
+  session: Session
+  date: string
+}
+
+export function buildSession(minutes: number): Session {
+  let sections: Section[]
+  if (minutes <= 15) {
+    sections = [
+      {
+        type: SectionType.simple,
+        name: "Entrenamiento libre",
+        duration: minutes,
+      },
+    ]
+  } else if (minutes <= 30) {
+    sections = [
+      {
+        type: SectionType.simple,
+        name: "Entrenamiento libre",
+        duration: minutes * 0.4,
+      },
+      {
+        type: SectionType.simple,
+        name: "Partidas competitivas",
+        duration: minutes * 0.6,
+      },
+    ]
+  } else {
+    sections = mockSections(minutes).sections
+  }
+
+  return {
+    duration: minutes,
+    sections: sections,
+  }
+}
+
+export default function mockSections(minutes: number): Session {
+  const fractions = [0.1, 0.25, 0.1, 0.4, 0.15]
+  const sections: Section[] = [
     {
       type: SectionType.simple,
       name: "Entrenamiento libre",
@@ -37,10 +80,14 @@ export default function buildSession(minutes: number): Section[] {
       type: SectionType.training,
       name: "Entrenamiento",
       codes: [
-        { name: "0aaaa0123kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas", code: "NOTO-0934-IE03-MBZK" },
-        { name: "Positional taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaactics", code: "J19Y-H6XN-LA1S-KCHS" },
-        // { name: "Positions 101", code: "1J8V-SH9W-N23O-2O83" },
-        // { name: "General-precision", code: "SD02-FGHJ-31J4-XMAL" },
+        {
+          name: "0aaaa0123kaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas",
+          code: "NOTO-0934-IE03-MBZK",
+        },
+        {
+          name: "Positional taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaactics",
+          code: "J19Y-H6XN-LA1S-KCHS",
+        },
       ],
       duration: fractions[1] * minutes,
     },
@@ -51,7 +98,7 @@ export default function buildSession(minutes: number): Section[] {
     },
     {
       type: SectionType.simple,
-      name: "Partidas competitivos",
+      name: "Partidas competitivas",
       duration: fractions[3] * minutes,
     },
     {
@@ -59,7 +106,29 @@ export default function buildSession(minutes: number): Section[] {
       name: "Revision",
       duration: fractions[4] * minutes,
     },
-  ])
+  ]
 
-  return []
+  return {
+    duration: minutes,
+    sections: sections,
+  }
+}
+
+function randomDate(start: Date, end: Date): Date {
+    return new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    )
+  }
+
+export function randomSession(): Session {
+    return buildSession(Math.floor(Math.random() * 100))
+}
+
+export function randomCompletedSession(): CompletedSession {
+    return {
+        id: "dasdsadsadsa",
+        userId: "dasdsadsad",
+        date: randomDate(new Date(2012, 0, 1), new Date()).toISOString(),
+        session: randomSession(),
+      }
 }

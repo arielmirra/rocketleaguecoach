@@ -1,4 +1,4 @@
-import type { CountdownResult, ImproveState } from "../../types/improve/types"
+import type { FullTime, ImproveState } from "../../types/improve/types"
 import { SubNavState } from "../../types/improve/types"
 
 export const improveInitialState: ImproveState = {
@@ -12,7 +12,7 @@ export const improveInitialState: ImproveState = {
  * Given finish time in ms, return formatted hours:minutes:seconds left
  * until that time.
  */
-export const getTimeLeft = (finishMs: number): CountdownResult => {
+export const getTimeLeft = (finishMs: number): FullTime => {
   const finishDate = new Date(finishMs)
   const today = new Date()
   const diffTime = finishDate.getTime() - today.getTime()
@@ -27,7 +27,7 @@ export const getTimeLeft = (finishMs: number): CountdownResult => {
 /**
  * Given hours,minutes,seconds object, format it to string
  */
-export const formatTime = (timeLeft: CountdownResult): string => {
+export const formatTime = (timeLeft: FullTime): string => {
   const h = timeLeft.hours
   const m =
     timeLeft.minutes.toString().length === 1
@@ -38,6 +38,22 @@ export const formatTime = (timeLeft: CountdownResult): string => {
       ? `0${timeLeft.seconds}`
       : timeLeft.seconds
   return `${h}:${m}:${s}`
+}
+
+/**
+ * Given hours,minutes,seconds object, format it to string
+ */
+export const formatTimeCompleted = (timeLeft: FullTime): string => {
+  const h = timeLeft.hours
+  const m =
+    timeLeft.minutes.toString().length === 1
+      ? `0${timeLeft.minutes}`
+      : timeLeft.minutes
+  const s =
+    timeLeft.seconds.toString().length === 1
+      ? `0${timeLeft.seconds}`
+      : timeLeft.seconds
+  return `${h > 0 ? h + "h" : ""} ${m > 0 ? m + "m" : ""} ${s > 0 ? s + "s" : ""}`
 }
 
 /**

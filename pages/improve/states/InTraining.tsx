@@ -1,37 +1,42 @@
-import { IconButton, Typography } from "@mui/material"
+import { IconButton } from "@mui/material"
 import { Close } from "@mui/icons-material"
-import { makeStyles } from "@mui/styles"
-import { inTrainingStyles } from "../../../styles/improve/styles"
-import { formatTime } from "../../../utils/improve/utils"
-import { InTrainingProps } from "../../../types/improve/types"
+import { closeButtonStyles, inTrainingStyles } from "../../../styles/improve/styles"
 import { useCountdown } from "../../../hooks/improve/hooks"
 import Session from "../../../components/Session"
-import buildSession from "../../../utils/session"
+import { buildSession } from "../../../utils/session"
+import { MatButton } from "../../../hooks/formik"
+import { useMemo } from "react"
 
-const useCloseButtonStyles = makeStyles({
-  root: {
-    position: "absolute",
-    top: "10px",
-    left: "10px",
-  },
-})
 
-const InTraining = (props: InTrainingProps): React.ReactElement => {
-  const timeLeft = useCountdown({ finishMs: props.finishMs })
-  const closeButtonStyles = useCloseButtonStyles()
+interface InTrainingProps {
+  finishMs: number
+  minutes: number
+  onCancel: () => void
+  onDone: (newSessionData: any) => void
+}
+
+const InTraining = ({
+  finishMs,
+  minutes,
+  onCancel,
+  onDone,
+}: InTrainingProps) => {
+  const timeLeft = useCountdown({ finishMs })
+
+  const session = useMemo(() => buildSession(minutes), [minutes])
 
   return (
     <>
       <div className="improve-training-container">
         <IconButton
-          onClick={props.onCancel}
-          classes={closeButtonStyles}
+          onClick={onCancel}
+          sx={closeButtonStyles}
           color="primary"
         >
           <Close />
         </IconButton>
-        <Typography variant="h3">{formatTime(timeLeft)}</Typography>
-        <Session sections={buildSession(props.minutes)} totalDuration={props.minutes}/>
+        <Session fullTime={timeLeft} session={session} style={{height: '100%'}}/>
+        <MatButton onClick={() => onDone(session)} text='Done'/>
       </div>
       <style jsx>{inTrainingStyles}</style>
     </>

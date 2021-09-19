@@ -1,19 +1,26 @@
 import { useEffect, useState } from "react"
-import { CountdownProps, CountdownResult } from "../../types/improve/types"
+import {FullTime } from "../../types/improve/types"
 import { getTimeLeft } from "../../utils/improve/utils"
 
+interface CountdownProps {
+  finishMs: number
+}
 /**
  * Given finish time, returns hours:minutes:seconds and updates
  * frequently.
  */
-export const useCountdown = (props: CountdownProps): CountdownResult => {
-  const [timeLeft, setTimeLeft] = useState<CountdownResult>(
-    getTimeLeft(props.finishMs)
+export const useCountdown = ({ finishMs }: CountdownProps): FullTime => {
+  const [timeLeft, setTimeLeft] = useState<FullTime>(
+    getTimeLeft(finishMs)
   )
 
   useEffect(() => {
+    let newTimeLeft: FullTime = getTimeLeft(finishMs);
+    if (newTimeLeft.hours < 0 || newTimeLeft.minutes < 0 || newTimeLeft.seconds < 0) {
+      newTimeLeft = { hours: 0, minutes: 0, seconds: 0 }
+    }
     const timer = setTimeout(() => {
-      setTimeLeft(getTimeLeft(props.finishMs))
+      setTimeLeft(newTimeLeft)
     }, 500)
 
     return () => clearInterval(timer)

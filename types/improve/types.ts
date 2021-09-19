@@ -21,10 +21,6 @@ export type InTrainingProps = {
   onDone: (newSessionData: any) => void
 }
 
-export type RLCodeProps = {
-  children: string
-}
-
 /**
  * Hooks types
  */
@@ -32,7 +28,7 @@ export type CountdownProps = {
   finishMs: number
 }
 
-export type CountdownResult = {
+export type FullTime = {
   seconds: number
   minutes: number
   hours: number

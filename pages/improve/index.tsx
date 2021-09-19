@@ -9,7 +9,7 @@ import { ImproveState, SubNavState } from "../../types/improve/types"
 import { improvePageStyles } from "../../styles/improve/styles"
 
 function getNumberFromLocalStorage(key: string) {
-  const item = localStorage.getItem("finishMs")
+  const item = localStorage.getItem(key)
   return item ? +item : 0
 }
 
@@ -67,8 +67,12 @@ const ImprovePage = () => {
               localStorage.setItem("subNavState", SubNavState.notStarted)
               setState(improveInitialState)
             }}
-            onDone={(newSessionData) => {
-              console.log("new session done", newSessionData)
+            onDone={(session) => {
+              localStorage.setItem("subNavState", SubNavState.notStarted)
+              localStorage.setItem("finishMs", "")
+              localStorage.setItem("minutes", "")
+              setState(improveInitialState);
+              console.log("new session done", session)
             }}
           />
         )}
