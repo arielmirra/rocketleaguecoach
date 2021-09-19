@@ -1,9 +1,7 @@
-
 import { Typography } from "@mui/material"
 import { useEffect } from "react"
 import { RLCodeTextStyles } from "../../styles/components/styles"
 import { RLCodeProps } from "../../types/components/types"
-
 
 const RLCodeText = (props: RLCodeProps): React.ReactElement => {
   useEffect(() => {

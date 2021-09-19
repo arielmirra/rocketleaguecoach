@@ -1,13 +1,13 @@
 import { getApp, getApps, initializeApp } from "firebase/app"
 import {
-  getFirestore,
   collection,
-  getDocs,
-  getDoc,
-  setDoc,
   doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  setDoc,
 } from "firebase/firestore"
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 
 const jsonString: string = process.env.NEXT_PUBLIC_FIREBASE_CONFIG
   ? process.env.NEXT_PUBLIC_FIREBASE_CONFIG

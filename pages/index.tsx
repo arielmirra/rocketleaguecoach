@@ -1,7 +1,6 @@
 import Head from "next/head"
 import Google from "../components/Icons/Google"
-import { Theme, Typography } from "@mui/material"
-import { makeStyles } from "@mui/styles"
+import { Typography } from "@mui/material"
 import { loginWithGoogle } from "../firebase/client"
 import { AuthAction, withAuthUser } from "next-firebase-auth"
 import Loader from "../components/Loader"
@@ -9,15 +8,7 @@ import Button from "../components/Button"
 import Logo from "../components/Icons/Logo"
 import { colors } from "../styles/theme"
 
-const useStyles = makeStyles({
-  text: {
-    color: "white",
-  },
-})
-
 const Home = () => {
-  const classes = useStyles()
-
   const googleAuth = async () => {
     await loginWithGoogle()
   }
@@ -31,10 +22,8 @@ const Home = () => {
 
       <section>
         <Logo width="350" />
-        <Typography className={classes.text} variant="h4">
-          Rocket League Coach
-        </Typography>
-        <Typography className={classes.text} variant="h5">
+        <Typography variant="h4">Rocket League Coach</Typography>
+        <Typography variant="h5">
           Jugá mejor a Rocket League
           <br />
           De forma fácil y rápida 🚗🚀⚽️

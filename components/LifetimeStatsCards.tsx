@@ -12,7 +12,7 @@ const LifetimeStatsCards = ({ segment }: Props) => {
 
   return (
     <>
-      <Grid container spacing={2} justifyContent="center" alignItems='stretch'>
+      <Grid container spacing={2} justifyContent="center" alignItems="stretch">
         <Grid item xs={6}>
           <StatCard stat={stats.wins} />
         </Grid>
@@ -23,7 +23,7 @@ const LifetimeStatsCards = ({ segment }: Props) => {
           <StatCard stat={stats.shots} />
         </Grid>
         <Grid item xs={6}>
-          <StatCard stat={stats.goalShotRatio} percentage/>
+          <StatCard stat={stats.goalShotRatio} percentage />
         </Grid>
         <Grid item xs={6}>
           <StatCard stat={stats.assists} />

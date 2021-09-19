@@ -46,6 +46,7 @@ export default css`
     position: relative;
     flex: 1;
     height: 100vh;
+    width: 100%;
   }
 
   @media (min-width: ${breakpoints.mobile}) {

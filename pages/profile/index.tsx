@@ -3,26 +3,26 @@ import React, { useEffect, useState } from "react"
 import { getEpicIDFromId, saveEpicID } from "../../firebase/client"
 import { MatButton, MatTextField } from "../../hooks/formik"
 import {
-  Grid,
   Avatar,
-  Typography,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  IconButton,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Typography,
 } from "@mui/material"
 import { Create as CreateIcon } from "@mui/icons-material"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
 import {
-  TrackerStats,
-  Segment,
+  OverviewSegment,
   PlaylistSegment,
   Rank,
-  OverviewSegment,
+  Segment,
+  TrackerStats,
 } from "../../models/Tracker"
 import LifetimeStatsCards from "../../components/LifetimeStatsCards"
 import RankBoard from "../../components/RankBoard"
@@ -92,11 +92,11 @@ interface EditEpicIDModalProps {
 }
 
 function EditEpicIDModal({
-                           isOpen,
-                           onClose,
-                           submitting,
-                           formik,
-                         }: EditEpicIDModalProps) {
+  isOpen,
+  onClose,
+  submitting,
+  formik,
+}: EditEpicIDModalProps) {
   return (
     <Dialog
       open={isOpen}

@@ -13,18 +13,18 @@ const NotStarted = (props: NotStartedProps): React.ReactElement => {
     },
     validationSchema: Yup.object().shape(
       {
-        hours: Yup.number().when('minutes', {
-          is: (minutes) => !minutes || minutes.length === 0,
+        hours: Yup.number().when("minutes", {
+          is: (minutes: string) => !minutes || minutes.length === 0,
           then: Yup.number().required(),
-          otherwise: Yup.number()
+          otherwise: Yup.number(),
         }),
-        minutes: Yup.number().when('hours', {
-            is: (hours) => !hours || hours.length === 0,
-            then: Yup.number().required(),
-            otherwise: Yup.number()
+        minutes: Yup.number().when("hours", {
+          is: (hours: string) => !hours || hours.length === 0,
+          then: Yup.number().required(),
+          otherwise: Yup.number(),
         }),
       },
-      [['hours', 'minutes']],
+      [["hours", "minutes"]]
     ),
     onSubmit: (values) => {
       props.onStart(
@@ -39,16 +39,8 @@ const NotStarted = (props: NotStartedProps): React.ReactElement => {
       <Typography variant="h5">Nueva sesión</Typography>
       <form onSubmit={formik.handleSubmit}>
         <div className="text-inputs">
-          <MatInput
-            formik={formik}
-            inputId="hours"
-            suffix="hs"
-          />
-          <MatInput
-            formik={formik}
-            inputId="minutes"
-            suffix="m"
-          />
+          <MatInput formik={formik} inputId="hours" suffix="hs" />
+          <MatInput formik={formik} inputId="minutes" suffix="m" />
         </div>
         <MatButton text="Entrenar!" type="submit" size="large" />
       </form>

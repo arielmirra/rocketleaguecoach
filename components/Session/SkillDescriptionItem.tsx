@@ -3,8 +3,9 @@ import { skillDescriptionItemStyles } from "../../styles/components/styles"
 import { SkillDescriptionItemProps } from "../../types/components/types"
 import RLCodeText from "./RLCodeText"
 
-  
-const SkillDescriptionItem = (props: SkillDescriptionItemProps): React.ReactElement => {
+const SkillDescriptionItem = (
+  props: SkillDescriptionItemProps
+): React.ReactElement => {
   return (
     <>
       <div className="skill-description-item">

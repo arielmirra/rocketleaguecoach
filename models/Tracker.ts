@@ -1,4 +1,8 @@
-export type Playlist = 'Un-Ranked' | "Ranked Duel 1v1" | "Ranked Doubles 2v2" | "Ranked Standard 3v3"
+export type Playlist =
+  | "Un-Ranked"
+  | "Ranked Duel 1v1"
+  | "Ranked Doubles 2v2"
+  | "Ranked Standard 3v3"
 
 export interface TrackerStats {
   segments: Segment[]
@@ -21,7 +25,7 @@ export interface PlaylistSegment {
   type: "playlist"
   attributes: any
   metadata: {
-    name: Playlist,
+    name: Playlist
   }
   stats: PlaylistStats
 }

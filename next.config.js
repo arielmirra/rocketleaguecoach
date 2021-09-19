@@ -1,5 +1,5 @@
 /**
- * @type {import('next').NextConfig}
+ * @type {import("next").NextConfig}
  */
 const nextTranslate = require("next-translate")
 

@@ -1,4 +1,4 @@
-import { Section } from '../../utils/session'
+import { Section } from "../../utils/session"
 
 export interface SessionProps {
   sections: Section[]
@@ -8,8 +8,8 @@ export interface SessionProps {
 export interface SkillDescriptionItemProps {
   skillName: string
   codes: {
-    name: string;
-    code: string;
+    name: string
+    code: string
   }[]
 }
 

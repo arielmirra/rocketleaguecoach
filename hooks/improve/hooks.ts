@@ -7,8 +7,9 @@ import { getTimeLeft } from "../../utils/improve/utils"
  * frequently.
  */
 export const useCountdown = (props: CountdownProps): CountdownResult => {
-  const [timeLeft, setTimeLeft] = useState<CountdownResult>(getTimeLeft(props.finishMs))
-
+  const [timeLeft, setTimeLeft] = useState<CountdownResult>(
+    getTimeLeft(props.finishMs)
+  )
 
   useEffect(() => {
     const timer = setTimeout(() => {

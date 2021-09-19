@@ -1,6 +1,6 @@
-import { Grid, Typography, Divider, Avatar } from "@mui/material"
+import { Avatar, Divider, Grid, Typography } from "@mui/material"
 import { grey } from "@mui/material/colors"
-import { Rank as RankData, Playlist } from "../models/Tracker"
+import { Playlist, Rank as RankData } from "../models/Tracker"
 
 interface RankProps {
   playlist: Playlist
@@ -31,7 +31,7 @@ function Rank({ playlist, rank }: RankProps) {
             src={validRank.iconUrl}
             alt={validRank.name}
             title={validRank.name}
-            variant='square'
+            variant="square"
           />
         </Grid>
         <Grid item>
