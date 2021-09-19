@@ -1,5 +1,5 @@
 import React from "react"
-import { Card, CardActionArea, CardContent, Typography } from "@mui/material"
+import { Card, CardContent, Typography } from "@mui/material"
 import useTranslation from "next-translate/useTranslation"
 import { Stat } from "../models/Tracker"
 
@@ -8,34 +8,35 @@ function roundIfNecessary(n: number) {
 }
 
 interface Props {
-  stat : Stat,
-  percentage? : boolean
+  stat: Stat
+  percentage?: boolean
 }
 
-const StatCard = ({ stat, percentage } : Props) => {
+const StatCard = ({ stat, percentage }: Props) => {
   const { t } = useTranslation("common")
   return (
     <>
-      <Card sx={{height: '100%', display: 'flex', placeContent: 'center'}}>
-        <CardActionArea>
-          <CardContent>
-            <Typography gutterBottom variant="h5" align='center'>
-              {t(stat.displayName)}
-            </Typography>
-            <Typography gutterBottom variant="h5" align='center'>
-              {`${roundIfNecessary(stat.value)}${percentage ? ' %' : ''}`}
-            </Typography>
-            <Typography variant="subtitle1" color="text.primary" align='center'>
-              Rango mundial
-            </Typography>
-            <Typography variant="subtitle2" color="text.primary" align='center'>
-              {stat.rank || "N/A"}
-            </Typography>
-            <Typography variant="subtitle2" color="text.primary" align='center'>
-              Top {stat.percentile ? `${roundIfNecessary(100 - stat.percentile)}%` : "N/A"}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
+      <Card sx={{ height: "100%", display: "flex", placeContent: "center" }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" align="center">
+            {t(stat.displayName)}
+          </Typography>
+          <Typography gutterBottom variant="h5" align="center">
+            {`${roundIfNecessary(stat.value)}${percentage ? " %" : ""}`}
+          </Typography>
+          <Typography variant="subtitle1" color="text.primary" align="center">
+            Rango mundial
+          </Typography>
+          <Typography variant="subtitle2" color="text.primary" align="center">
+            {stat.rank || "N/A"}
+          </Typography>
+          <Typography variant="subtitle2" color="text.primary" align="center">
+            Top{" "}
+            {stat.percentile
+              ? `${roundIfNecessary(100 - stat.percentile)}%`
+              : "N/A"}
+          </Typography>
+        </CardContent>
       </Card>
       <style jsx>{``}</style>
     </>
