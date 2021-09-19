@@ -7,13 +7,20 @@ enum SectionType {
   review,
 }
 
+interface RLCode {
+  name: string
+  code: string
+}
+
 export interface SimpleSection {
+  name: string
   type: SectionType
   duration: number
 }
 
 export interface TrainingSection extends SimpleSection {
-  codes: string[]
+  type: SectionType.training
+  codes: RLCode[]
 }
 
 export type Section = SimpleSection | TrainingSection

@@ -2,10 +2,7 @@ import { Section } from '../../utils/session'
 
 export interface SessionProps {
   sections: Section[]
-}
-
-export interface VerticalProgressBarProps {
-  verticalProgressBarData: any
+  totalDuration: number
 }
 
 export interface SkillDescriptionItemProps {
