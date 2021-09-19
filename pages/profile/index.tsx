@@ -145,7 +145,7 @@ const ProfilePage = () => {
 
   const getSavedEpicId = async () => {
     setEpicID(RemoteData.loading())
-    const epicID = await getEpicIDFromId(AuthUser.id)
+    const epicID = await getEpicIDFromId(AuthUser.id || "")
     setEpicID(RemoteData.present(epicID))
     formik.values.epicID = epicID
   }
@@ -183,7 +183,7 @@ const ProfilePage = () => {
     },
     onSubmit: async (values) => {
       setEpicID(RemoteData.loading())
-      saveEpicID(AuthUser.id, values.epicID)
+      await saveEpicID(AuthUser.id, values.epicID)
       closeModal()
       setEpicID(RemoteData.present(values.epicID))
     },
