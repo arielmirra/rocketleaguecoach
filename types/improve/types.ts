@@ -3,6 +3,7 @@ export type ImproveState = {
   startMs: number
   finishMs: number
   minutes: number
+  loading: boolean
 }
 
 export enum SubNavState {

@@ -7,6 +7,7 @@ import Loader from "../../components/Loader"
 import { improveInitialState } from "../../utils/improve/utils"
 import { ImproveState, SubNavState } from "../../types/improve/types"
 import { improvePageStyles } from "../../styles/improve/styles"
+import { saveSession } from "../../firebase/client"
 
 function getNumberFromLocalStorage(key: string) {
   const item = localStorage.getItem(key)
@@ -30,6 +31,7 @@ const ImprovePage = () => {
         startMs: getNumberFromLocalStorage("startMs"),
         finishMs: getNumberFromLocalStorage("finishMs"),
         minutes: getNumberFromLocalStorage("minutes"),
+        loading: false,
       }
 
       setState(localStorageData)
@@ -55,6 +57,7 @@ const ImprovePage = () => {
                 startMs,
                 finishMs,
                 minutes,
+                loading: false,
               })
             }}
           />
@@ -63,16 +66,23 @@ const ImprovePage = () => {
           <InTraining
             finishMs={state.finishMs}
             minutes={state.minutes}
+            loading={state.loading}
             onCancel={() => {
               localStorage.setItem("subNavState", SubNavState.notStarted)
               setState(improveInitialState)
             }}
             onDone={(session) => {
-              localStorage.setItem("subNavState", SubNavState.notStarted)
-              localStorage.setItem("finishMs", "")
-              localStorage.setItem("minutes", "")
-              setState(improveInitialState);
-              console.log("new session done", session)
+              setState({...state, loading: true})
+              if (authUser.id) {
+                saveSession(session, authUser.id).then(() => {
+                  localStorage.setItem("subNavState", SubNavState.notStarted)
+                  localStorage.setItem("finishMs", "")
+                  localStorage.setItem("minutes", "")
+                  setState(improveInitialState);
+                })
+              } else {
+                console.error("no user id, cant save session")
+              }
             }}
           />
         )}

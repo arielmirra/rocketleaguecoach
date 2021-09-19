@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, ButtonProps, InputAdornment, OutlinedInput, OutlinedInputProps, TextField } from "@mui/material"
+import { Button, ButtonProps, CircularProgress, InputAdornment, OutlinedInput, OutlinedInputProps, TextField } from "@mui/material"
 
 interface BaseProps {
   formik: any
@@ -56,13 +56,14 @@ export const MatSelect = ({ formik, inputId, label, ...props }: BaseProps) => {
 }
 
 interface MatButtonProps extends ButtonProps {
-  text: string;
+  text: string
+  loading: boolean
 }
 
-export const MatButton = ({ text, ...rest }: MatButtonProps): React.ReactElement => {
+export const MatButton = ({ text, loading, ...rest }: MatButtonProps): React.ReactElement => {
   return (
     <Button color="primary" variant="contained" fullWidth {...rest}>
-      {text}
+      {loading ? <CircularProgress size={24}/> : text}
     </Button>
   )
 }

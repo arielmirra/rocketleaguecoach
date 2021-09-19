@@ -13,6 +13,7 @@ interface InTrainingProps {
   minutes: number
   onCancel: () => void
   onDone: (newSessionData: any) => void
+  loading: boolean
 }
 
 const InTraining = ({
@@ -20,6 +21,7 @@ const InTraining = ({
   minutes,
   onCancel,
   onDone,
+  loading,
 }: InTrainingProps) => {
   const timeLeft = useCountdown({ finishMs })
 
@@ -36,7 +38,7 @@ const InTraining = ({
           <Close />
         </IconButton>
         <Session fullTime={timeLeft} session={session} style={{height: '100%'}}/>
-        <MatButton onClick={() => onDone(session)} text='Done'/>
+        <MatButton onClick={() => onDone(session)} text='Done' loading={loading}/>
       </div>
       <style jsx>{inTrainingStyles}</style>
     </>

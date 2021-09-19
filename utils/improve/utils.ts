@@ -6,6 +6,7 @@ export const improveInitialState: ImproveState = {
   startMs: 0,
   finishMs: 0,
   minutes: 0,
+  loading: false,
 }
 
 /**
