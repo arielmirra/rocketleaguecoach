@@ -1,16 +1,34 @@
+export type Playlist = 'Un-Ranked' | "Ranked Duel 1v1" | "Ranked Doubles 2v2" | "Ranked Standard 3v3"
+
 export interface TrackerStats {
   segments: Segment[]
 }
 
-export interface Segment {
-  attributes: any
-  metadata: Metadata
-  stats: Stats
-  type: string
+export interface Rank {
+  iconUrl: string
+  name: string
+  division: string
 }
 
-export interface Stats {
-  // overview stats
+export interface OverviewSegment {
+  type: "overview"
+  attributes: any
+  metadata: Metadata
+  stats: OverviewStats
+}
+
+export interface PlaylistSegment {
+  type: "playlist"
+  attributes: any
+  metadata: {
+    name: Playlist,
+  }
+  stats: PlaylistStats
+}
+
+export type Segment = OverviewSegment | PlaylistSegment
+
+export interface OverviewStats {
   assists: Stat
   goalShotRatio: Stat
   goals: Stat
@@ -22,12 +40,13 @@ export interface Stats {
   shots: Stat
   tRNRating: Stat
   wins: Stat
+}
 
-  // playlist stats
+export interface PlaylistStats {
   division: Stat
   matchesPlayed: Stat
   rating: Stat
-  tier: Stat
+  tier: Tier
   winStreak: Stat
 }
 
@@ -42,6 +61,14 @@ export interface Stat {
 
 export interface Metadata {
   name: string
+}
+
+export interface Tier extends Stat {
+  metadata: TierMetadata
+}
+
+export interface TierMetadata extends Metadata {
+  iconUrl: string
 }
 
 export interface Attributes {

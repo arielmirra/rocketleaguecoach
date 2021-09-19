@@ -17,7 +17,13 @@ import {
 import { Create as CreateIcon } from "@mui/icons-material"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
-import { TrackerStats } from "../../models/Tracker"
+import {
+  TrackerStats,
+  Segment,
+  PlaylistSegment,
+  Rank,
+  OverviewSegment,
+} from "../../models/Tracker"
 import LifetimeStatsCards from "../../components/LifetimeStatsCards"
 import RankBoard from "../../components/RankBoard"
 import { globalPadding } from "../../styles/styles"
@@ -54,9 +60,9 @@ function Header({ name, photoURL, epicID, onEditEpicID }: HeaderProps) {
       <Grid container item xs={4} justifyContent="center">
         <Avatar
           sx={{ width: 100, height: 100 }}
-          alt={name || ''}
-          src={photoURL || ''}
-          title={name || ''}
+          alt={name || ""}
+          src={photoURL || ""}
+          title={name || ""}
         />
       </Grid>
       <Grid item xs={8} container direction="column" justifyContent="center">
@@ -239,7 +245,33 @@ interface GotStatsStateProps {
   stats: TrackerStats
 }
 
+function getRankedData(segments: Segment[]) {
+  const versus1 = segments.find(
+    (s) => s.type === "playlist" && s.metadata.name === "Ranked Duel 1v1"
+  ) as PlaylistSegment
+  const versus2 = segments.find(
+    (s) => s.type === "playlist" && s.metadata.name === "Ranked Doubles 2v2"
+  ) as PlaylistSegment
+  const versus3 = segments.find(
+    (s) => s.type === "playlist" && s.metadata.name === "Ranked Standard 3v3"
+  ) as PlaylistSegment
+  return {
+    versus1: versus1 ? getRankFromSegment(versus1) : undefined,
+    versus2: versus2 ? getRankFromSegment(versus2) : undefined,
+    versus3: versus3 ? getRankFromSegment(versus3) : undefined,
+  }
+}
+
+function getRankFromSegment(segment: PlaylistSegment): Rank {
+  return {
+    iconUrl: segment.stats.tier.metadata.iconUrl,
+    name: segment.stats.tier.metadata.name,
+    division: segment.stats.division.metadata.name,
+  }
+}
+
 function GotStatsState({ stats }: GotStatsStateProps) {
+  const rankedData = getRankedData(stats.segments)
   return (
     <Grid
       container
@@ -248,10 +280,14 @@ function GotStatsState({ stats }: GotStatsStateProps) {
       sx={{ paddingTop: "20px" }}
     >
       <Grid item sx={{ margin: `0 -${globalPadding}` }}>
-        <RankBoard />
+        <RankBoard
+          versus1={rankedData.versus1}
+          versus2={rankedData.versus2}
+          versus3={rankedData.versus3}
+        />
       </Grid>
       <Grid item>
-        <LifetimeStatsCards segment={stats.segments[0]} />
+        <LifetimeStatsCards segment={stats.segments[0] as OverviewSegment} />
       </Grid>
     </Grid>
   )

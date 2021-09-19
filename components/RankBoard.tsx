@@ -1,15 +1,10 @@
 import { Grid, Typography, Divider, Avatar } from "@mui/material"
-import { makeStyles } from "@mui/styles"
 import { grey } from "@mui/material/colors"
-
-interface RankData {
-  iconUrl: string
-  name: string
-  division: string
-}
+import { Rank as RankData, Playlist } from "../models/Tracker"
 
 interface RankProps {
-  rank: RankData
+  playlist: Playlist
+  rank?: RankData
 }
 
 interface RankBoardProps {
@@ -18,62 +13,66 @@ interface RankBoardProps {
   versus1?: RankData
 }
 
-const useStyles = makeStyles(() => ({
-  rankImage: {
-    height: "100px",
-    width: "100px",
-  },
-}))
-
-function Rank({ rank }: RankProps) {
-  const classes = useStyles()
+function Rank({ playlist, rank }: RankProps) {
+  const rankedString = "Ranked "
+  const withoutRanked = playlist.includes(rankedString)
+    ? playlist.substring(rankedString.length)
+    : playlist
+  const validRank = rank || unrankedRank
   return (
     <>
       <Grid container direction="column" alignItems="center">
         <Grid item>
-          <Typography>{rank.name}</Typography>
+          <Typography>{withoutRanked}</Typography>
         </Grid>
         <Grid item>
           <Avatar
             sx={{ height: 100, width: 100 }}
-            src={rank.iconUrl}
-            alt={rank.name}
-            title={rank.name}
+            src={validRank.iconUrl}
+            alt={validRank.name}
+            title={validRank.name}
+            variant='square'
           />
         </Grid>
         <Grid item>
-          <Typography>{rank.division}</Typography>
+          <Typography>{validRank.division}</Typography>
         </Grid>
       </Grid>
     </>
   )
 }
 
-const dummyRank = {
-  iconUrl: "https://trackercdn.com/cdn/tracker.gg/rocket-league/ranks/s4-8.png",
-  name: "Gold II",
-  division: "Division III",
+const unrankedRank = {
+  iconUrl: "https://trackercdn.com/cdn/tracker.gg/rocket-league/ranks/s4-0.png",
+  name: "Unranked",
+  division: "N/A",
 }
 
 function RankBoard({ versus3, versus2, versus1 }: RankBoardProps) {
   return (
-      <Grid container direction="row" justifyContent="space-around" alignItems='stretch' sx={{bgcolor: grey[100], padding: '20px'}}>
-        <Grid item>
-          <Rank rank={dummyRank} />
-        </Grid>
-        <Grid item>
-          <Divider orientation="vertical" variant="middle" sx={{margin: 0}}/>
-        </Grid>
-        <Grid item>
-          <Rank rank={dummyRank} />
-        </Grid>
-        <Grid item>
-          <Divider orientation="vertical" variant="middle" sx={{margin: 0}}/>
-        </Grid>
-        <Grid item>
-          <Rank rank={dummyRank} />
-        </Grid>
+    <Grid
+      container
+      direction="row"
+      justifyContent="space-around"
+      alignItems="stretch"
+      sx={{ bgcolor: grey[100], padding: "20px" }}
+    >
+      <Grid item>
+        <Rank playlist="Ranked Duel 1v1" rank={versus1} />
       </Grid>
+      <Grid item>
+        <Divider orientation="vertical" variant="middle" sx={{ margin: 0 }} />
+      </Grid>
+      <Grid item>
+        <Rank playlist="Ranked Doubles 2v2" rank={versus2} />
+      </Grid>
+      <Grid item>
+        <Divider orientation="vertical" variant="middle" sx={{ margin: 0 }} />
+      </Grid>
+      <Grid item>
+        <Rank playlist="Ranked Standard 3v3" rank={versus3} />
+      </Grid>
+    </Grid>
   )
 }
 
