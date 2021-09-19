@@ -1,6 +1,6 @@
 import css from "styled-jsx/css"
 
-import { breakpoints, colors, fonts } from "./theme"
+import { breakpoints, fonts } from "./theme"
 
 const backgroundUrl =
   "https://steamuserimages-a.akamaihd.net/ugc/80339917954151566/3CB9761163B46FC5F38B822CCD28E7AE9AEFBAB5/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
@@ -91,22 +91,5 @@ export default css`
     display: flex;
     height: 49px;
     width: 100%;
-  }
-
-  nav a {
-    align-items: center;
-    display: flex;
-    flex: 1 1 auto;
-    height: 100%;
-    justify-content: center;
-  }
-
-  nav a:hover {
-    background: radial-gradient(${colors.primary}22 15%, transparent 16%) center;
-    background-size: 180px 180px;
-  }
-
-  nav a:hover > :global(svg) {
-    stroke: ${colors.primary};
   }
 `
