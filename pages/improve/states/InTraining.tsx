@@ -31,7 +31,7 @@ const InTraining = (props: InTrainingProps): React.ReactElement => {
           <Close />
         </IconButton>
         <Typography variant="h3">{formatTime(timeLeft)}</Typography>
-        <Session sections={buildSession(props.hours)} totalDuration={props.hours}/>
+        <Session sections={buildSession(props.minutes)} totalDuration={props.minutes}/>
       </div>
       <style jsx>{inTrainingStyles}</style>
     </>

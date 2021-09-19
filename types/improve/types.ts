@@ -2,7 +2,7 @@ export type ImproveState = {
   subNavState: SubNavState
   startMs: number
   finishMs: number
-  hours: number
+  minutes: number
 }
 
 export enum SubNavState {
@@ -11,12 +11,12 @@ export enum SubNavState {
 }
 
 export interface NotStartedProps {
-  onStart: (hours: number, startMs: number) => void
+  onStart: (minutes: number, startMs: number) => void
 }
 
 export type InTrainingProps = {
   finishMs: number
-  hours: number
+  minutes: number
   onCancel: () => void
   onDone: (newSessionData: any) => void
 }

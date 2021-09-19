@@ -14,6 +14,7 @@ export const inTrainingStyles = css`
     flex-flow: column nowrap;
     align-items: center;
     padding-top: 20px;
+    height: 100%;
   }
   .floating-icon-button {
     position: absolute;

@@ -16,7 +16,7 @@ const VerticalProgressBar = (props: SessionProps): React.ReactElement => {
             <div
               key={`progress-${i}`}
               style={{
-                height: `${section.duration}%`,
+                height: `${section.duration / props.totalDuration * 100}%`,
                 backgroundColor: verticalProgressBarColors[i],
               }}
             />

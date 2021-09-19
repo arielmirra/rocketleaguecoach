@@ -9,12 +9,28 @@ const NotStarted = (props: NotStartedProps): React.ReactElement => {
   const formik = useFormik({
     initialValues: {
       hours: "",
+      minutes: "",
     },
-    validationSchema: Yup.object({
-      hours: Yup.number().required("Required"),
-    }),
+    validationSchema: Yup.object().shape(
+      {
+        hours: Yup.number().when('minutes', {
+          is: (minutes) => !minutes || minutes.length === 0,
+          then: Yup.number().required(),
+          otherwise: Yup.number()
+        }),
+        minutes: Yup.number().when('hours', {
+            is: (hours) => !hours || hours.length === 0,
+            then: Yup.number().required(),
+            otherwise: Yup.number()
+        }),
+      },
+      [['hours', 'minutes']],
+    ),
     onSubmit: (values) => {
-      props.onStart(parseInt(values.hours), new Date().getTime())
+      props.onStart(
+        (parseInt(values.hours) || 0) * 60 + (parseInt(values.minutes) || 0),
+        new Date().getTime()
+      )
     },
   })
 
@@ -28,11 +44,11 @@ const NotStarted = (props: NotStartedProps): React.ReactElement => {
             inputId="hours"
             suffix="hs"
           />
-          {/* <MatInput
+          <MatInput
             formik={formik}
             inputId="minutes"
             suffix="m"
-          /> */}
+          />
         </div>
         <MatButton text="Entrenar!" type="submit" size="large" />
       </form>

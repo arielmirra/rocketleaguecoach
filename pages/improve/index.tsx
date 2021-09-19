@@ -1,4 +1,4 @@
-import { addHours } from "date-fns"
+import { addMinutes } from "date-fns"
 import { useEffect, useState } from "react"
 import InTraining from "./states/InTraining"
 import NotStarted from "./states/NotStarted"
@@ -29,7 +29,7 @@ const ImprovePage = () => {
           SubNavState.notStarted,
         startMs: getNumberFromLocalStorage("startMs"),
         finishMs: getNumberFromLocalStorage("finishMs"),
-        hours: getNumberFromLocalStorage("hours"),
+        minutes: getNumberFromLocalStorage("minutes"),
       }
 
       setState(localStorageData)
@@ -45,16 +45,16 @@ const ImprovePage = () => {
       <div className="improve-container">
         {state.subNavState === SubNavState.notStarted && (
           <NotStarted
-            onStart={(hours, startMs) => {
-              const finishMs = addHours(new Date(startMs), hours).getTime()
+            onStart={(minutes, startMs) => {
+              const finishMs = addMinutes(new Date(startMs), minutes).getTime()
               localStorage.setItem("subNavState", SubNavState.inTraining)
               localStorage.setItem("finishMs", finishMs.toString())
-              localStorage.setItem("hours", hours.toString())
+              localStorage.setItem("minutes", minutes.toString())
               setState({
                 subNavState: SubNavState.inTraining,
                 startMs,
                 finishMs,
-                hours,
+                minutes,
               })
             }}
           />
@@ -62,7 +62,7 @@ const ImprovePage = () => {
         {state.subNavState === SubNavState.inTraining && (
           <InTraining
             finishMs={state.finishMs}
-            hours={state.hours}
+            minutes={state.minutes}
             onCancel={() => {
               localStorage.setItem("subNavState", SubNavState.notStarted)
               setState(improveInitialState)

@@ -5,7 +5,7 @@ export const improveInitialState: ImproveState = {
   subNavState: SubNavState.notStarted,
   startMs: 0,
   finishMs: 0,
-  hours: 0,
+  minutes: 0,
 }
 
 /**
@@ -15,7 +15,7 @@ export const improveInitialState: ImproveState = {
 export const getTimeLeft = (finishMs: number): CountdownResult => {
   const finishDate = new Date(finishMs)
   const today = new Date()
-  const diffTime = finishDate.getMilliseconds() - today.getMilliseconds()
+  const diffTime = finishDate.getTime() - today.getTime()
 
   return {
     seconds: Math.floor((diffTime / 1000) % 60),
