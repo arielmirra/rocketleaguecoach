@@ -8,18 +8,12 @@ import {
   Avatar,
 } from "@mui/material"
 import { AccessTime as AccessTimeIcon } from "@mui/icons-material"
-import { CompletedSession, randomCompletedSession } from "../../utils/session"
+import { Cancel as CancelIcon } from "@mui/icons-material"
+import { CompletedSession } from "../../utils/session"
 import { globalPadding } from "../../styles/styles"
 import { useRouter } from "next/router"
-import { useState } from "react"
-
-function buildDummySessions(amt: number): CompletedSession[] {
-  return Array(amt)
-    .fill(0)
-    .map(() => randomCompletedSession())
-}
-
-const dummies = buildDummySessions(10)
+import { useEffect, useState } from "react"
+import { getPlayerSessions } from "../../firebase/client"
 
 function minutesToHsAndMinutesSpanish(min: number): string {
   const hours = Math.floor(min / 60)
@@ -36,8 +30,8 @@ function minutesToHsAndMinutesSpanish(min: number): string {
 }
 
 const HistoryPage = () => {
-  const AuthUser = useAuthUser()
-  const sessions = dummies
+  const authUser = useAuthUser()
+  const [sessions, setSessions] = useState<CompletedSession[]>([])
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -46,43 +40,78 @@ const HistoryPage = () => {
     router.push(`/history/${id}`)
   }
 
-  if (loading) return <Loader />
+  useEffect(() => {
+    setLoading(true)
+    getPlayerSessions(authUser.id || "").then((ss) => {
+      setSessions(ss)
+      console.log(ss)
+      setLoading(false)
+    })
+  }, [])
 
-  return (
-    <>
-      <div
-        style={{
-          marginLeft: `-${globalPadding}`,
-          marginRight: `-${globalPadding}`,
-        }}
-      >
-        <List sx={{ width: "100%" }}>
-          {sessions.map((s, i) => (
-            <ListItem
-              key={i}
-              button
-              divider={i !== sessions.length - 1}
-              onClick={() => redirectToSession(s.id)}
-            >
+  if (loading) {
+    return <Loader />
+  } else if (sessions.length === 0) {
+    return (
+      <>
+        <div
+          style={{
+            marginLeft: `-${globalPadding}`,
+            marginRight: `-${globalPadding}`,
+          }}
+        >
+          <List sx={{ width: "100%" }}>
+            <ListItem button divider={false}>
               <ListItemAvatar>
                 <Avatar>
-                  <AccessTimeIcon />
+                  <CancelIcon />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={minutesToHsAndMinutesSpanish(s.session.duration)}
-                secondary={new Date(s.date).toLocaleDateString("es-AR", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
+                primary={"No se han encontrado sesiones"}
+                secondary={"¡A entrenar!"}
               />
             </ListItem>
-          ))}
-        </List>
-      </div>
-    </>
-  )
+          </List>
+        </div>
+      </>
+    )
+  } else
+    return (
+      <>
+        <div
+          style={{
+            marginLeft: `-${globalPadding}`,
+            marginRight: `-${globalPadding}`,
+          }}
+        >
+          <List sx={{ width: "100%" }}>
+            {sessions.map((s, i) => (
+              <ListItem
+                key={i}
+                button
+                divider={i !== sessions.length - 1}
+                onClick={() => redirectToSession(s.id)}
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <AccessTimeIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={minutesToHsAndMinutesSpanish(s.session.duration)}
+                  secondary={new Date(s.date).toLocaleDateString("es-AR", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      </>
+    )
 }
 
 export default withAuthUser({

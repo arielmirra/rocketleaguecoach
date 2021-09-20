@@ -1,5 +1,13 @@
 import React from "react"
-import { Button, ButtonProps, CircularProgress, InputAdornment, OutlinedInput, OutlinedInputProps, TextField } from "@mui/material"
+import {
+  Button,
+  ButtonProps,
+  CircularProgress,
+  InputAdornment,
+  OutlinedInput,
+  OutlinedInputProps,
+  TextField,
+} from "@mui/material"
 
 interface BaseProps {
   formik: any
@@ -8,7 +16,12 @@ interface BaseProps {
   suffix?: string
 }
 
-export const MatTextField = ({ formik, inputId, label, ...props }: BaseProps) => {
+export const MatTextField = ({
+  formik,
+  inputId,
+  label,
+  ...props
+}: BaseProps) => {
   return (
     <TextField
       fullWidth
@@ -29,7 +42,12 @@ export const MatTextField = ({ formik, inputId, label, ...props }: BaseProps) =>
 
 type MatInputProps = BaseProps & OutlinedInputProps
 
-export const MatInput = ({ formik, inputId, suffix, ...rest }: MatInputProps) => {
+export const MatInput = ({
+  formik,
+  inputId,
+  suffix,
+  ...rest
+}: MatInputProps) => {
   return (
     <OutlinedInput
       fullWidth
@@ -47,7 +65,12 @@ export const MatInput = ({ formik, inputId, suffix, ...rest }: MatInputProps) =>
   )
 }
 
-export const MatCheckbox = ({ formik, inputId, label, ...props }: BaseProps) => {
+export const MatCheckbox = ({
+  formik,
+  inputId,
+  label,
+  ...props
+}: BaseProps) => {
   return <></>
 }
 
@@ -57,13 +80,17 @@ export const MatSelect = ({ formik, inputId, label, ...props }: BaseProps) => {
 
 interface MatButtonProps extends ButtonProps {
   text: string
-  loading: boolean
+  loading?: boolean
 }
 
-export const MatButton = ({ text, loading, ...rest }: MatButtonProps): React.ReactElement => {
+export const MatButton = ({
+  text,
+  loading,
+  ...rest
+}: MatButtonProps): React.ReactElement => {
   return (
     <Button color="primary" variant="contained" fullWidth {...rest}>
-      {loading ? <CircularProgress size={24}/> : text}
+      {loading ? <CircularProgress size={24} /> : text}
     </Button>
   )
 }

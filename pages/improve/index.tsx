@@ -8,6 +8,7 @@ import { improveInitialState } from "../../utils/improve/utils"
 import { ImproveState, SubNavState } from "../../types/improve/types"
 import { improvePageStyles } from "../../styles/improve/styles"
 import { saveSession } from "../../firebase/client"
+import { Session } from "../../utils/session"
 
 function getNumberFromLocalStorage(key: string) {
   const item = localStorage.getItem(key)
@@ -71,14 +72,14 @@ const ImprovePage = () => {
               localStorage.setItem("subNavState", SubNavState.notStarted)
               setState(improveInitialState)
             }}
-            onDone={(session) => {
-              setState({...state, loading: true})
+            onDone={(session: Session) => {
+              setState({ ...state, loading: true })
               if (authUser.id) {
                 saveSession(session, authUser.id).then(() => {
                   localStorage.setItem("subNavState", SubNavState.notStarted)
                   localStorage.setItem("finishMs", "")
                   localStorage.setItem("minutes", "")
-                  setState(improveInitialState);
+                  setState(improveInitialState)
                 })
               } else {
                 console.error("no user id, cant save session")

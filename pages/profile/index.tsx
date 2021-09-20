@@ -154,9 +154,6 @@ const ProfilePage = () => {
     setStats(RemoteData.loading())
     const data = await getTrackerStats(epicID)
     const statistics: TrackerStats = data.data
-    console.log(data.data)
-    console.log(statistics)
-    console.log(statistics.segments)
     setStats(RemoteData.present(statistics))
   }
 
