@@ -13,6 +13,14 @@ export const globalStyles = css.global`
     margin: 0;
     font-family: ${fonts.base};
     overscroll-behavior-y: none;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+  }
+
+  div#__next,
+  div#__next > div {
+    height: 100%;
   }
 
   * {
@@ -30,7 +38,7 @@ export const globalPadding = "20px"
 export default css`
   .main-container {
     display: grid;
-    height: 100vh;
+    height: 100%;
     place-items: center;
     overflow: hidden;
   }
