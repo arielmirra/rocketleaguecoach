@@ -13,14 +13,12 @@ export const globalStyles = css.global`
     margin: 0;
     font-family: ${fonts.base};
     overscroll-behavior-y: none;
-    position: fixed;
-    height: 100%;
-    width: 100%;
+    height: -webkit-fill-available;
   }
 
   div#__next,
   div#__next > div {
-    height: 100%;
+    height: -webkit-fill-available;
   }
 
   * {
@@ -53,7 +51,7 @@ export default css`
     overflow: hidden;
     position: relative;
     flex: 1;
-    height: 100vh;
+    height: 100%;
     width: 100%;
   }
 
