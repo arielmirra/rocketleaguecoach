@@ -35,6 +35,7 @@ export const MatTextField = ({
       onChange={formik.handleChange}
       error={formik.touched[inputId] && Boolean(formik.errors[inputId])}
       helperText={formik.touched[inputId] && formik.errors[inputId]}
+      autoComplete="off"
       {...props}
     />
   )
@@ -60,6 +61,7 @@ export const MatInput = ({
       error={formik.touched[inputId] && Boolean(formik.errors[inputId])}
       endAdornment={<InputAdornment position="end">{suffix}</InputAdornment>}
       // helperText={formik.touched[inputId] && formik.errors[inputId]}
+      autoComplete="off"
       {...rest}
     />
   )
