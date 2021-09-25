@@ -9,6 +9,7 @@ import { ImproveState, SubNavState } from "../../types/improve/types"
 import { improvePageStyles } from "../../styles/improve/styles"
 import { saveSession } from "../../firebase/client"
 import { Session } from "../../utils/session"
+import { useRouter } from "next/router"
 
 function getNumberFromLocalStorage(key: string) {
   const item = localStorage.getItem(key)
@@ -17,6 +18,7 @@ function getNumberFromLocalStorage(key: string) {
 
 const ImprovePage = () => {
   const authUser = useAuthUser()
+  const router = useRouter()
   const [state, setState] = useState<ImproveState>(improveInitialState)
 
   /**
@@ -74,15 +76,17 @@ const ImprovePage = () => {
             }}
             onDone={(session: Session) => {
               setState({ ...state, loading: true })
+              console.log(session)
               if (authUser.id) {
                 saveSession(session, authUser.id).then(() => {
                   localStorage.setItem("subNavState", SubNavState.notStarted)
                   localStorage.setItem("finishMs", "")
                   localStorage.setItem("minutes", "")
                   setState(improveInitialState)
+                  router.push("/history/")
                 })
               } else {
-                console.error("no user id, cant save session")
+                console.error("no user id, can't save session")
               }
             }}
           />

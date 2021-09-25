@@ -2,14 +2,21 @@ import Head from "next/head"
 import Google from "../components/Icons/Google"
 import { Typography } from "@mui/material"
 import { loginWithGoogle } from "../firebase/client"
-import { AuthAction, withAuthUser } from "next-firebase-auth"
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../components/Loader"
 import Button from "../components/Button"
 import Logo from "../components/Icons/Logo"
 import { colors } from "../styles/theme"
+import { useRouter } from "next/router"
 
 const Home = () => {
-  const googleAuth = async () => {
+  const authUser = useAuthUser()
+  const router = useRouter()
+
+  console.log(authUser)
+  if (authUser) router.push("/profile")
+
+  async function googleAuth() {
     await loginWithGoogle()
   }
 
