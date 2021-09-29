@@ -5,7 +5,6 @@
       "babel-plugin-direct-import",
       {
         "modules": [
-          "@mui/material",
           "@mui/icons-material",
           "next-firebase-auth"
         ]

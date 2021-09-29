@@ -96,6 +96,16 @@ export const saveSession = async (
   }
 }
 
+export const getSession = async (uuid: string): Promise<any> => {
+  try {
+    const docRef = doc(db, "sessions", uuid)
+    const docSnapshot = await getDoc(docRef)
+    return docSnapshot.data() || null
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export const getSessionsIds = async (
   session: Session,
   userId: string

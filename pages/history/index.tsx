@@ -11,9 +11,9 @@ import AccessTime from "@mui/icons-material/AccessTime"
 import Cancel from "@mui/icons-material/Cancel"
 import { CompletedSession } from "../../utils/session"
 import { globalPadding } from "../../styles/styles"
-import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { getPlayerSessions } from "../../firebase/client"
+import Link from "next/link"
 
 function minutesToHsAndMinutesSpanish(min: number): string {
   const hours = Math.floor(min / 60)
@@ -32,13 +32,7 @@ function minutesToHsAndMinutesSpanish(min: number): string {
 const HistoryPage = () => {
   const authUser = useAuthUser()
   const [sessions, setSessions] = useState<CompletedSession[]>([])
-  const router = useRouter()
   const [loading, setLoading] = useState(false)
-
-  async function redirectToSession(id: string) {
-    setLoading(true)
-    router.push(`/history/${id}`)
-  }
 
   useEffect(() => {
     setLoading(true)
@@ -87,26 +81,23 @@ const HistoryPage = () => {
         >
           <List sx={{ width: "100%" }}>
             {sessions.map((s, i) => (
-              <ListItem
-                key={i}
-                button
-                divider={i !== sessions.length - 1}
-                onClick={() => redirectToSession(s.id)}
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    <AccessTime />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={minutesToHsAndMinutesSpanish(s.session.duration)}
-                  secondary={new Date(s.date).toLocaleDateString("es-AR", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                />
-              </ListItem>
+              <Link href={`/history/${s.id}`} key={i} passHref>
+                <ListItem key={i} button divider={i !== sessions.length - 1}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <AccessTime />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={minutesToHsAndMinutesSpanish(s.session.duration)}
+                    secondary={new Date(s.date).toLocaleDateString("es-AR", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  />
+                </ListItem>
+              </Link>
             ))}
           </List>
         </div>

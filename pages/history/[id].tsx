@@ -1,21 +1,20 @@
 import Close from "@mui/icons-material/Close"
 import IconButton from "@mui/material/IconButton"
-import { GetStaticPaths, GetStaticProps, GetStaticPropsResult } from "next"
-import { useRouter } from "next/router"
 import { useMemo } from "react"
 import Session from "../../components/Session"
 import { closeButtonStyles } from "../../styles/improve/styles"
+import Link from "next/link"
+import { getSession } from "../../firebase/client"
 import { CompletedSession, randomCompletedSession } from "../../utils/session"
+import Typography from "@mui/material/Typography"
 
 interface CompletedSessionPageProps {
   session: CompletedSession
 }
 
-export default function CompletedSessionPage({
-  session,
-}: CompletedSessionPageProps) {
-  const router = useRouter()
-
+const CompletedSessionPage = ({ maybeSession }: any) => {
+  console.log(maybeSession)
+  const session = maybeSession || randomCompletedSession()
   const fullTime = useMemo(
     () => ({
       hours: Math.floor(session.session.duration / 60),
@@ -25,57 +24,67 @@ export default function CompletedSessionPage({
     [session.session.duration]
   )
 
-  const handleGoBack = () => {
-    router.push("/history/")
+  if (maybeSession) {
+    return (
+      <>
+        <div className="container">
+          <Link href={"/history/"} passHref>
+            <IconButton sx={closeButtonStyles} color="primary">
+              <Close />
+            </IconButton>
+          </Link>
+          <Session
+            completedSession={{ date: session.date }}
+            fullTime={fullTime}
+            session={session.session}
+          />
+        </div>
+        <style jsx>{`
+          .container {
+            position: relative;
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+            padding-top: 20px;
+            height: 100%;
+          }
+        `}</style>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <div className="container">
+          <Link href={"/history/"} passHref>
+            <IconButton sx={closeButtonStyles} color="primary">
+              <Close />
+            </IconButton>
+          </Link>
+        </div>
+        <Typography variant="h4" align="center">
+          No se ha encontrado la sesión solicitada
+        </Typography>
+        <style jsx>{`
+          .container {
+            position: relative;
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+            padding-top: 20px;
+            height: 50%;
+          }
+        `}</style>
+      </>
+    )
   }
-
-  return (
-    <>
-      <div className="container">
-        <IconButton
-          onClick={handleGoBack}
-          sx={closeButtonStyles}
-          color="primary"
-        >
-          <Close />
-        </IconButton>
-        <Session
-          completedSession={{ date: session.date }}
-          fullTime={fullTime}
-          session={session.session}
-        />
-      </div>
-      <style jsx>{`
-        .container {
-          position: relative;
-          display: flex;
-          flex-flow: column nowrap;
-          align-items: center;
-          padding-top: 20px;
-          height: 100%;
-        }
-      `}</style>
-    </>
-  )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export async function getServerSideProps(context: any) {
+  const id = context.params.id
+  const maybeSession = await getSession(id)
   return {
-    paths: [
-      { params: { id: "asdasdsad" } },
-      { params: { id: "asdasdasddsad" } },
-      { params: { id: "adasd" } },
-    ],
-    fallback: "blocking",
+    props: { maybeSession }, // will be passed to the page component as props
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({
-  params,
-}): Promise<GetStaticPropsResult<CompletedSessionPageProps>> => {
-  return {
-    props: {
-      session: randomCompletedSession(),
-    },
-  }
-}
+export default CompletedSessionPage
