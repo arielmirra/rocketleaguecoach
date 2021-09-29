@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import Typography from "@mui/material/Typography"
 import { RLCodeTextStyles } from "./styles"
 
 interface RLCodeProps {
@@ -6,7 +6,6 @@ interface RLCodeProps {
 }
 
 const RLCodeText = ({ children }: RLCodeProps) => {
-  
   // TODO: add functionality to copy to clipboard on click
   // useEffect(() => {
   //   if (typeof navigator === "undefined") {

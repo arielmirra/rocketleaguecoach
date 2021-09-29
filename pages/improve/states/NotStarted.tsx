@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import Typography from "@mui/material/Typography"
 import { useFormik } from "formik"
 import { MatButton, MatInput } from "../../../hooks/formik"
 import * as Yup from "yup"
@@ -60,12 +60,14 @@ const NotStarted = ({ onStart }: NotStartedProps) => {
               suffix="hs"
               sx={hoursInputStyle}
               type="number"
+              inputProps={{ min: 0 }}
             />
             <MatInput
               formik={formik}
               inputId="minutes"
               suffix="m"
               type="number"
+              inputProps={{ min: 0 }}
             />
           </div>
           <MatButton text="¡Comenzar!" type="submit" size="large" />

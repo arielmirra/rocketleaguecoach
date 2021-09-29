@@ -1,5 +1,5 @@
-import { IconButton } from "@mui/material"
-import { Close } from "@mui/icons-material"
+import IconButton from "@mui/material/IconButton"
+import Close from "@mui/icons-material/Close"
 import { closeButtonStyles } from "../../../styles/improve/styles"
 import { useCountdown } from "../../../hooks/improve/hooks"
 import Session from "../../../components/Session"

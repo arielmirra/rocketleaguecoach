@@ -14,7 +14,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material"
-import { Create as CreateIcon } from "@mui/icons-material"
+import Create from "@mui/icons-material/Create"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
 import {
@@ -74,7 +74,7 @@ function Header({ name, photoURL, epicID, onEditEpicID }: HeaderProps) {
             </Grid>
             <Grid item>
               <IconButton onClick={onEditEpicID}>
-                <CreateIcon />
+                <Create />
               </IconButton>
             </Grid>
           </Grid>

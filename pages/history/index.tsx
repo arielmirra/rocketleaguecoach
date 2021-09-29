@@ -7,8 +7,8 @@ import {
   ListItemAvatar,
   Avatar,
 } from "@mui/material"
-import { AccessTime as AccessTimeIcon } from "@mui/icons-material"
-import { Cancel as CancelIcon } from "@mui/icons-material"
+import AccessTime from "@mui/icons-material/AccessTime"
+import Cancel from "@mui/icons-material/Cancel"
 import { CompletedSession } from "../../utils/session"
 import { globalPadding } from "../../styles/styles"
 import { useRouter } from "next/router"
@@ -64,7 +64,7 @@ const HistoryPage = () => {
             <ListItem button divider={false}>
               <ListItemAvatar>
                 <Avatar>
-                  <CancelIcon />
+                  <Cancel />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
@@ -95,7 +95,7 @@ const HistoryPage = () => {
               >
                 <ListItemAvatar>
                   <Avatar>
-                    <AccessTimeIcon />
+                    <AccessTime />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
