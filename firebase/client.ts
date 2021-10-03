@@ -8,7 +8,7 @@ import {
   query,
   setDoc,
   where,
-} from "firebase/firestore"
+} from "firebase/firestore/lite"
 import {
   getAuth,
   GoogleAuthProvider,
@@ -23,12 +23,9 @@ const firebaseConfig = JSON.parse(jsonString)
 if (!getApps().length) {
   initializeApp(firebaseConfig)
 }
-// firebase.auth().useDeviceLanguage()
 const fb = getApp()
 const auth = getAuth(fb)
 const db = getFirestore(fb)
-const epicIDs = collection(db, "epicIDs")
-const sessions = collection(db, "sessions")
 
 export const loginWithGoogle = async (): Promise<UserCredential> => {
   auth.config.authDomain = "rocket-league-coach.firebaseapp.com"
