@@ -1,4 +1,7 @@
-import { Avatar, Divider, Grid, Typography } from "@mui/material"
+import Avatar from "@mui/material/Avatar"
+import Divider from "@mui/material/Divider"
+import Typography from "@mui/material/Typography"
+import Grid from "@mui/material/Grid"
 import { grey } from "@mui/material/colors"
 import { Playlist, Rank as RankData } from "../models/Tracker"
 

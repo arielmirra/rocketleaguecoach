@@ -1,19 +1,12 @@
 import { useFormik } from "formik"
 import React, { useEffect, useState } from "react"
 import { getEpicIDFromId, saveEpicID } from "../../firebase/client"
-import { MatButton, MatTextField } from "../../hooks/formik"
-import {
-  Avatar,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material"
+import { MatButton } from "../../hooks/formik"
+import Avatar from "@mui/material/Avatar"
+import CircularProgress from "@mui/material/CircularProgress"
+import Grid from "@mui/material/Grid"
+import IconButton from "@mui/material/IconButton"
+import Typography from "@mui/material/Typography"
 import Create from "@mui/icons-material/Create"
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"

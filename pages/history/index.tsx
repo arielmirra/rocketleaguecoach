@@ -1,12 +1,10 @@
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth"
 import Loader from "../../components/Loader"
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-} from "@mui/material"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import ListItemAvatar from "@mui/material/ListItemAvatar"
+import Avatar from "@mui/material/Avatar"
 import AccessTime from "@mui/icons-material/AccessTime"
 import Cancel from "@mui/icons-material/Cancel"
 import { CompletedSession } from "../../utils/session"

@@ -1,14 +1,9 @@
 import React from "react"
-import {
-  Button,
-  ButtonProps,
-  CircularProgress,
-  InputAdornment,
-  OutlinedInput,
-  OutlinedInputProps,
-  TextField,
-} from "@mui/material"
-
+import Button, { ButtonProps } from "@mui/material/Button"
+import CircularProgress from "@mui/material/CircularProgress"
+import InputAdornment from "@mui/material/InputAdornment"
+import OutlinedInput, { OutlinedInputProps } from "@mui/material/OutlinedInput"
+import TextField from "@mui/material/TextField"
 interface BaseProps {
   formik: any
   inputId: string
