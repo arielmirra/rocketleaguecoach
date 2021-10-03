@@ -2,13 +2,10 @@ import css from "styled-jsx/css"
 
 import { breakpoints, fonts } from "./theme"
 
-const backgroundUrl =
-  "https://steamuserimages-a.akamaihd.net/ugc/80339917954151566/3CB9761163B46FC5F38B822CCD28E7AE9AEFBAB5/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
-
 export const globalStyles = css.global`
   html,
   body {
-    background: url(${backgroundUrl});
+    background: url("/rl-background.jpeg");
     padding: 0;
     margin: 0;
     font-family: ${fonts.base};
