@@ -10,12 +10,13 @@ function roundIfNecessary(n: number) {
 interface Props {
   stat: Stat
   percentage?: boolean
+  empty?: boolean
 }
 
-const StatCard = ({ stat, percentage }: Props) => {
+const StatCard = ({ stat, percentage, empty }: Props) => {
   const { t } = useTranslation("common")
-  return (
-    <>
+  if (!empty) {
+    return (
       <Card sx={{ height: "100%", display: "flex", placeContent: "center" }}>
         <CardContent>
           <Typography gutterBottom variant="h5" align="center">
@@ -38,9 +39,32 @@ const StatCard = ({ stat, percentage }: Props) => {
           </Typography>
         </CardContent>
       </Card>
-      <style jsx>{``}</style>
-    </>
-  )
+    )
+  } else {
+    return (
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          placeContent: "center",
+        }}
+      >
+        <CardContent>
+          <Typography gutterBottom variant="h5" align="center">
+            No se encuentran estadísticas
+          </Typography>
+          <Typography variant="subtitle1" color="text.primary" align="center">
+            Prueba vincular tu cuenta de Epic Games en la
+            <a href="https://www.rocketleague.com/activate/">
+              {" "}
+              página de Rocket League
+            </a>
+            .
+          </Typography>
+        </CardContent>
+      </Card>
+    )
+  }
 }
 
 export default StatCard

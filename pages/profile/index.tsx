@@ -28,8 +28,9 @@ import LifetimeStatsCards from "../../components/LifetimeStatsCards"
 import RankBoard from "../../components/RankBoard"
 import { globalPadding } from "../../styles/styles"
 import * as RemoteData from "../../models/RemoteData"
+import EpicIDModal from "../../components/EditEpicIDModal"
 
-async function getTrackerStats(epicID: string) {
+async function getTrackerStats(epicID: string): Promise<TrackerStats | null> {
   if (epicID) {
     const proxy = "https://intense-beyond-50191.herokuapp.com/"
     const api =
@@ -42,8 +43,8 @@ async function getTrackerStats(epicID: string) {
     })
     const data = await res.json()
     if (res.status === 404) {
-      return { notFound: true }
-    } else return data
+      return null
+    } else return data.data
   } else return null
 }
 
@@ -84,77 +85,31 @@ function Header({ name, photoURL, epicID, onEditEpicID }: HeaderProps) {
   )
 }
 
-interface EditEpicIDModalProps {
-  isOpen: boolean
-  onClose: () => void
-  submitting: boolean
-  formik: any
-}
-
-function EditEpicIDModal({
-  isOpen,
-  onClose,
-  submitting,
-  formik,
-}: EditEpicIDModalProps) {
-  return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">Ingresá tu Epic ID</DialogTitle>
-      <DialogContent>
-        {submitting ? (
-          <div className="center-content">
-            <CircularProgress />
-          </div>
-        ) : (
-          <form onSubmit={formik.handleSubmit}>
-            <MatTextField inputId="epicID" formik={formik} label="Epic ID" />
-          </form>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="primary" disabled={submitting}>
-          Cancelar
-        </Button>
-        <Button
-          onClick={formik.submitForm}
-          color="primary"
-          autoFocus
-          disabled={submitting}
-        >
-          Guardar
-        </Button>
-      </DialogActions>
-    </Dialog>
-  )
-}
-
 const ProfilePage = () => {
-  const AuthUser = useAuthUser()
+  const authUser = useAuthUser()
   const [isModalOpen, setModalOpened] = useState(false)
   const [epicID, setEpicID] = useState<RemoteData.RemoteData<string>>(
     RemoteData.notAsked()
   )
-  const [stats, setStats] = useState<RemoteData.RemoteData<TrackerStats>>(
-    RemoteData.notAsked()
-  )
+  const [stats, setStats] = useState<
+    RemoteData.RemoteData<TrackerStats | null>
+  >(RemoteData.notAsked())
 
   const getSavedEpicId = async () => {
     setEpicID(RemoteData.loading())
-    const epicID = await getEpicIDFromId(AuthUser.id || "")
+    const epicID = await getEpicIDFromId(authUser.id || "")
     setEpicID(RemoteData.present(epicID))
     formik.values.epicID = epicID
   }
 
   const fetchStats = async (epicID: string) => {
     setStats(RemoteData.loading())
-    const data = await getTrackerStats(epicID)
-    const statistics: TrackerStats = data.data
-    setStats(RemoteData.present(statistics))
+    const statistics = await getTrackerStats(epicID)
+    if (statistics) {
+      setStats(RemoteData.present(statistics))
+    } else {
+      setStats(RemoteData.present(null))
+    }
   }
 
   useEffect(() => {
@@ -180,7 +135,7 @@ const ProfilePage = () => {
     },
     onSubmit: async (values) => {
       setEpicID(RemoteData.loading())
-      await saveEpicID(AuthUser.id, values.epicID)
+      await saveEpicID(authUser.id, values.epicID)
       closeModal()
       setEpicID(RemoteData.present(values.epicID))
     },
@@ -189,8 +144,8 @@ const ProfilePage = () => {
   return (
     <>
       <Header
-        name={AuthUser.displayName}
-        photoURL={AuthUser.photoURL}
+        name={authUser.displayName}
+        photoURL={authUser.photoURL}
         epicID={epicID}
         onEditEpicID={openModal}
       />
@@ -199,17 +154,28 @@ const ProfilePage = () => {
           <MatButton onClick={openModal} text="Ingresá tu Epic ID" />
         </div>
       )}
-      {stats.state === "present" && <GotStatsState stats={stats.data} />}
+      {stats.state === "present" && stats.data === null && (
+        <GotStatsState trackerStats={{ segments: [] }} />
+      )}
+      {stats.state === "present" && stats.data && (
+        <GotStatsState trackerStats={stats.data} />
+      )}
       {(stats.state === "loading" || epicID.state === "loading") && (
         <div className="center-content">
           <CircularProgress />
         </div>
       )}
-      <EditEpicIDModal
+      <EpicIDModal
         isOpen={isModalOpen}
         onClose={closeModal}
         submitting={epicID.state === "loading"}
         formik={formik}
+      />
+      <MatButton
+        text={"Cerrar Sesión"}
+        color={"error"}
+        sx={{ marginTop: 4 }}
+        onClick={() => authUser.signOut()}
       />
       <style jsx>{`
         #save-epic-id {
@@ -239,7 +205,7 @@ export default withAuthUser({
 })(ProfilePage)
 
 interface GotStatsStateProps {
-  stats: TrackerStats
+  trackerStats: TrackerStats
 }
 
 function getRankedData(segments: Segment[]) {
@@ -267,25 +233,47 @@ function getRankFromSegment(segment: PlaylistSegment): Rank {
   }
 }
 
-function GotStatsState({ stats }: GotStatsStateProps) {
-  const rankedData = getRankedData(stats.segments)
-  return (
-    <Grid
-      container
-      direction="column"
-      rowSpacing={2}
-      sx={{ paddingTop: "20px" }}
-    >
-      <Grid item sx={{ margin: `0 -${globalPadding}` }}>
-        <RankBoard
-          versus1={rankedData.versus1}
-          versus2={rankedData.versus2}
-          versus3={rankedData.versus3}
-        />
+function GotStatsState({ trackerStats }: GotStatsStateProps) {
+  if (trackerStats.segments.length > 0) {
+    const rankedData = getRankedData(trackerStats.segments)
+    return (
+      <Grid
+        container
+        direction="column"
+        rowSpacing={2}
+        sx={{ paddingTop: "20px" }}
+      >
+        <Grid item sx={{ margin: `0 -${globalPadding}` }}>
+          <RankBoard
+            versus1={rankedData.versus1}
+            versus2={rankedData.versus2}
+            versus3={rankedData.versus3}
+          />
+        </Grid>
+        <Grid item>
+          <LifetimeStatsCards
+            segment={trackerStats.segments[0] as OverviewSegment}
+          />
+        </Grid>
       </Grid>
-      <Grid item>
-        <LifetimeStatsCards segment={stats.segments[0] as OverviewSegment} />
+    )
+  } else {
+    return (
+      <Grid
+        container
+        direction="column"
+        rowSpacing={2}
+        sx={{ paddingTop: "20px" }}
+      >
+        <Grid item sx={{ margin: `0 -${globalPadding}` }}>
+          <RankBoard />
+        </Grid>
+        <Grid item>
+          <LifetimeStatsCards
+            segment={trackerStats.segments[0] as OverviewSegment}
+          />
+        </Grid>
       </Grid>
-    </Grid>
-  )
+    )
+  }
 }

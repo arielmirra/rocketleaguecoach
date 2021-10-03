@@ -32,7 +32,7 @@ const initAuth = () => {
       //   process.env.NEXT_PUBLIC_COOKIE_SECRET_PREVIOUS,
       // ],
       httpOnly: true,
-      maxAge: 12 * 60 * 60 * 24 * 1000, // twelve days
+      maxAge: 1209600000, // 2 weeks in ms
       overwrite: true,
       path: "/",
       sameSite: "strict",

@@ -63,6 +63,17 @@ export interface Stat {
   value: number
 }
 
+export function emptyStat(): Stat {
+  return {
+    category: "N/A",
+    displayName: "N/A",
+    rank: 0,
+    percentile: 100,
+    metadata: { name: "N/A" },
+    value: 0,
+  }
+}
+
 export interface Metadata {
   name: string
 }
