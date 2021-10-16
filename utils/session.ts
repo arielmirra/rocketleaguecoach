@@ -3,7 +3,7 @@ export enum SectionType {
   training,
 }
 
-interface RLCode {
+interface Training {
   name: string
   code: string
 }
@@ -18,7 +18,7 @@ export interface SimpleSection extends BaseSection {
 
 export interface TrainingSection extends BaseSection {
   type: SectionType.training
-  codes: RLCode[]
+  trainings: Training[]
 }
 
 export type Section = SimpleSection | TrainingSection
@@ -48,7 +48,7 @@ function trainingSection(duration: number, amount: number): TrainingSection {
     type: SectionType.training,
     name: "Entrenamiento libre",
     duration: duration,
-    codes: getRecommendedTrainings(amount),
+    trainings: getRecommendedTrainings(amount),
   }
 }
 
@@ -95,14 +95,14 @@ export function randomCompletedSession(): CompletedSession {
   }
 }
 
-function getRecommendedTrainings(n: number): RLCode[] {
+function getRecommendedTrainings(n: number): Training[] {
   const shuffledTrainings = shuffle(bestTrainings)
   const length = shuffledTrainings.length
   const end = n < length ? n : length
   return shuffledTrainings.slice(0, end)
 }
 
-const shooting: RLCode[] = [
+const shooting: Training[] = [
   {
     name: "Shots you shouldn't miss",
     code: "42BF-686D-E047-574B",
@@ -117,7 +117,7 @@ const shooting: RLCode[] = [
   },
 ]
 
-const defending: RLCode[] = [
+const defending: Training[] = [
   {
     name: "Shadow defence",
     code: "5CCE-FB29-7B05-A0B1",
@@ -132,7 +132,7 @@ const defending: RLCode[] = [
   },
 ]
 
-const aerialControl: RLCode[] = [
+const aerialControl: Training[] = [
   {
     name: "Air dribbles",
     code: "9D87-258C-3C05-6FA9",
@@ -147,7 +147,7 @@ const aerialControl: RLCode[] = [
   },
 ]
 
-const redirects: RLCode[] = [
+const redirects: Training[] = [
   {
     name: "Cherry Picker",
     code: "D1F1-6096-8D71-F963",
@@ -162,7 +162,7 @@ const redirects: RLCode[] = [
   },
 ]
 
-const overall: RLCode[] = [
+const overall: Training[] = [
   {
     name: "SubparbuinHD",
     code: "E8DF-CA1A-DBEA-0C8F",
@@ -177,7 +177,7 @@ const overall: RLCode[] = [
   },
 ]
 
-const bestTrainings: RLCode[] = [
+const bestTrainings: Training[] = [
   ...shooting,
   ...defending,
   ...aerialControl,

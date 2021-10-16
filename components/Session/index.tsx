@@ -49,7 +49,7 @@ const Session = ({
                   <Typography variant="h6">{section.name}</Typography>
                   {section.type === SectionType.training && (
                     <div className="codes-container">
-                      {section.codes.map((code, j) => (
+                      {section.trainings.map((code, j) => (
                         <div className="code" key={`code-${j}`}>
                           <Typography
                             sx={{

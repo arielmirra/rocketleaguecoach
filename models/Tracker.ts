@@ -85,8 +85,3 @@ export interface Tier extends Stat {
 export interface TierMetadata extends Metadata {
   iconUrl: string
 }
-
-export interface Attributes {
-  playlistId: number
-  season: number
-}

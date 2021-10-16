@@ -35,8 +35,18 @@ const HistoryPage = () => {
   useEffect(() => {
     setLoading(true)
     getPlayerSessions(authUser.id || "").then((ss) => {
-      setSessions(ss)
-      console.log(ss)
+      if (ss.length > 0) {
+        setSessions(
+          ss.sort(function (a, b) {
+            const dateA = new Date(a.date).getTime()
+            const dateB = new Date(b.date).getTime()
+            console.log(dateA)
+            console.log(dateB)
+            return dateA < dateB ? 1 : -1
+          })
+        )
+        console.log(ss)
+      }
       setLoading(false)
     })
   }, [])
